@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# bea milli's boutique
 
-## Getting Started
+Tienda web en Next.js + panel de contenido en Sanity Studio.
 
-First, run the development server:
+## Estructura
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- `src/`: storefront (catálogo, producto, carrito y checkout por WhatsApp).
+- `studio/`: panel admin de Sanity para gestionar productos, colores, tallas y flags.
+
+## Variables de entorno
+
+### Storefront (`/.env`)
+
+```env
+VITE_SANITY_PROJECT_ID=your_project_id
+VITE_SANITY_DATASET=production
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Studio (`/studio/.env`)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+SANITY_STUDIO_PROJECT_ID=your_project_id
+SANITY_STUDIO_DATASET=production
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Puedes copiar desde:
 
-## Learn More
+- `/.env.example`
+- `/studio/.env.example`
 
-To learn more about Next.js, take a look at the following resources:
+## Desarrollo local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 1) Storefront
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm install
+npm run dev
+```
 
-## Deploy on Vercel
+Abre `http://localhost:5173`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2) Sanity Studio
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+cd studio
+npm install
+npm run dev
+```
+
+Abre `http://localhost:3333`.
+
+## Flujo de contenido (cliente final)
+
+1. Entrar al Studio.
+2. Crear o editar productos.
+3. Marcar `published = true`.
+4. Opcional: marcar `featuredHome`, `newArrival` o `bestSeller`.
+5. Guardar y publicar.
+
+La tienda solo muestra productos publicados.
+
+## Despliegue a producción
+
+### Frontend (recomendado: Vercel)
+
+1. Conectar repo de GitHub a Vercel.
+2. Configurar variables:
+   - `VITE_SANITY_PROJECT_ID`
+   - `VITE_SANITY_DATASET`
+3. Deploy.
+
+### Studio
+
+Desde `studio/`:
+
+```bash
+npm run deploy
+```
+
+También puedes desplegar Studio en Vercel como proyecto separado.
+
+## Notas
+
+- El checkout finaliza por WhatsApp (no pago directo dentro del sitio).
+- El catálogo usa datos publicados en Sanity (`perspective: "published"`).
