@@ -16,7 +16,7 @@ const display = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "bea milli's",
+  title: "bea millis",
   description: "Boutique online con catalogo por estilos y pedidos por WhatsApp",
 };
 

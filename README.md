@@ -1,4 +1,4 @@
-# bea milli's boutique
+# bea millis
 
 Tienda web en Next.js + panel de contenido en Sanity Studio.
 

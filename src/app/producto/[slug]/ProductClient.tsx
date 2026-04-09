@@ -134,7 +134,7 @@ export default function ProductClient({ product }: { product: Product }) {
           </div>
 
           <p className="mt-3 text-[1rem] text-black/62">
-            {product.description || "Pieza seleccionada en bea milli's boutique."}
+            {product.description || "Pieza seleccionada en bea millis."}
           </p>
 
           <div className="mt-7 space-y-2">

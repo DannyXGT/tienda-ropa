@@ -35,7 +35,7 @@ export function cartItemKey(i: Pick<CartItem, "productId" | "colorId" | "size">)
   return k(i);
 }
 
-const STORAGE_KEY = "boutique_cart_v1";
+const STORAGE_KEY = "bea_millis_cart_v1";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);

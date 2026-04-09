@@ -7,7 +7,7 @@ import { useCart } from "@/state/cart";
 
 type ThemeMode = "light" | "dark";
 
-const THEME_STORAGE_KEY = "bea_theme";
+const THEME_STORAGE_KEY = "bea_millis_theme";
 
 function Icon({ name }: { name: "tag" | "bag" | "theme" }) {
   const common = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none" as const };
@@ -111,7 +111,7 @@ export default function Header() {
               </span>
               <span className="min-w-0 leading-tight">
                 <span className="block max-w-[8.5rem] truncate text-[0.98rem] font-semibold tracking-tight text-black sm:max-w-none sm:text-[1.05rem]">
-                  bea milli&apos;s
+                  bea millis
                 </span>
                 <span className="hidden text-[10px] uppercase tracking-[0.26em] text-black/45 sm:block">
                   boutique

@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="card revealIn p-7">
           <div className="grid gap-7 md:grid-cols-3">
             <div>
-              <div className="text-[1.08rem] font-semibold tracking-tight">bea milli&apos;s</div>
+              <div className="text-[1.08rem] font-semibold tracking-tight">bea millis</div>
               <p className="mt-2 text-sm muted">
                 Boutique femenina con piezas seleccionadas, colores reales y pedido agil por
                 WhatsApp.
@@ -31,7 +31,7 @@ export default function Footer() {
                 Atencion directa por WhatsApp. Confirmamos disponibilidad, total y tiempo de
                 entrega en chat.
               </p>
-              <div className="mt-4 text-xs muted">(c) {new Date().getFullYear()} bea milli&apos;s</div>
+              <div className="mt-4 text-xs muted">(c) {new Date().getFullYear()} bea millis</div>
             </div>
           </div>
         </div>

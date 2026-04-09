@@ -15,7 +15,7 @@ if (!projectId) {
 
 export default defineConfig({
   name: "default",
-  title: "Rosa Boutique Admin",
+  title: "bea millis admin",
   projectId,
   dataset,
   plugins: [structureTool()],

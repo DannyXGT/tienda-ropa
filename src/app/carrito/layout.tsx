@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Carrito | bea milli's",
+  title: "Carrito | bea millis",
   description: "Revisa tu carrito y finaliza tu pedido por WhatsApp.",
 };
 
