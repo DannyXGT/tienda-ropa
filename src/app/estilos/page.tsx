@@ -9,7 +9,7 @@ export default async function StylesPage() {
     <div className="space-y-6">
       <SectionTitle
         title="Estilos"
-        subtitle="Selecciona un estilo para abrir el catalogo filtrado."
+        subtitle="Selecciona una seccion para ver las piezas disponibles."
       />
 
       {!styles.length && (
@@ -20,7 +20,7 @@ export default async function StylesPage() {
         {styles.map((style) => (
           <Link
             key={style.id}
-            href={`/catalogo?style=${style.id}`}
+            href={`/estilos/${style.id}`}
             className="card p-6 hover:shadow-[0_18px_40px_rgba(0,0,0,.08)] transition"
           >
             <div className="text-lg font-semibold">{style.name}</div>

@@ -2,6 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import type {
+  HomeGallery,
   Product,
   SizeLabel,
   Style,
@@ -10,6 +11,7 @@ import type {
 } from "@/lib/catalog.types";
 import { sanityClient } from "@/lib/sanity/client";
 import {
+  HOME_GALLERY_QUERY,
   PRODUCT_BY_SLUG_QUERY,
   PUBLISHED_PRODUCTS_QUERY,
 } from "@/lib/sanity/queries";
@@ -17,7 +19,6 @@ import {
 type SanityVariantSize = {
   _key?: string;
   size?: string;
-  stock?: number;
   priceOverride?: number | null;
   active?: boolean;
 };
@@ -155,10 +156,6 @@ function normalizeSize(size: SanityVariantSize, index: number): VariantSize | nu
   return {
     id: size._key ?? `${normalizedLabel}-${index}`,
     size: normalizedLabel as SizeLabel,
-    stock:
-      typeof size.stock === "number" && Number.isFinite(size.stock)
-        ? Math.max(0, Math.floor(size.stock))
-        : 0,
     priceOverride:
       typeof size.priceOverride === "number" && Number.isFinite(size.priceOverride)
         ? size.priceOverride
@@ -274,4 +271,26 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   }
 
   return normalizeProduct(result);
+}
+
+const getHomeGalleryFromSanity = cache(async (): Promise<HomeGallery | null> => {
+  if (!sanityClient) {
+    return null;
+  }
+
+  const result = await sanityClient.fetch<HomeGallery | null>(HOME_GALLERY_QUERY);
+  if (!result?.images?.length) {
+    return null;
+  }
+
+  return {
+    images: result.images.filter(
+      (image): image is string => typeof image === "string" && image.length > 0
+    ),
+  };
+});
+
+export async function getHomeGalleryImages(): Promise<string[]> {
+  const gallery = await getHomeGalleryFromSanity();
+  return gallery?.images ?? [];
 }

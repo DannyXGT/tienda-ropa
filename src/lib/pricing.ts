@@ -1,7 +1,7 @@
 import type { Product, Variant, VariantSize } from "@/lib/catalog.types";
 
 export function getVisibleSizes(variant: Variant): VariantSize[] {
-  return variant.sizes.filter((size) => size.active && size.stock > 0);
+  return variant.sizes.filter((size) => size.active);
 }
 
 export function getPriceForSize(product: Product, size?: VariantSize | null): number {

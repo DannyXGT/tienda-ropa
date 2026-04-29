@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useCart } from "@/state/cart";
 
 type ThemeMode = "light" | "dark";
@@ -55,13 +56,7 @@ function NavPill({ href, active, children }: { href: string; active: boolean; ch
 export default function Header() {
   const { count } = useCart();
   const pathname = usePathname();
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState("");
 
-  const isCatalogo =
-    pathname?.startsWith("/catalogo") ||
-    pathname?.startsWith("/estilos") ||
-    pathname?.startsWith("/producto");
   const isCarrito = pathname?.startsWith("/carrito");
 
   useEffect(() => {
@@ -79,18 +74,6 @@ export default function Header() {
     document.documentElement.setAttribute("data-theme", initialTheme);
   }, []);
 
-  function onSearchSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const q = searchQuery.trim();
-    if (!q) {
-      router.push("/catalogo");
-      return;
-    }
-
-    router.push(`/catalogo?q=${encodeURIComponent(q)}`);
-  }
-
   function onToggleTheme() {
     const currentTheme: ThemeMode =
       document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -106,11 +89,11 @@ export default function Header() {
         <div className="py-3">
           <div className="flex items-center justify-between gap-2 sm:gap-3">
             <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-[#f472b6] to-[#be185d] text-sm font-extrabold tracking-wide text-white shadow-[0_14px_32px_rgba(157,23,77,.30)] sm:h-11 sm:w-11">
-                BM
+              <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(18,18,24,.14)] ring-1 ring-black/8 sm:h-14 sm:w-14">
+                <Image src="/logo.jpeg" alt="Bea Millis" fill sizes="56px" className="object-cover" priority />
               </span>
               <span className="min-w-0 leading-tight">
-                <span className="block max-w-[8.5rem] truncate text-[0.98rem] font-semibold tracking-tight text-black sm:max-w-none sm:text-[1.05rem]">
+                <span className="block max-w-[8.5rem] truncate text-[1.02rem] font-semibold tracking-tight text-black sm:max-w-none sm:text-[1.1rem]">
                   bea millis
                 </span>
                 <span className="hidden text-[10px] uppercase tracking-[0.26em] text-black/45 sm:block">
@@ -118,21 +101,6 @@ export default function Header() {
                 </span>
               </span>
             </Link>
-
-            <form onSubmit={onSearchSubmit} className="hidden min-w-0 flex-1 items-center gap-2 md:flex">
-              <input
-                className="input !h-11 min-w-0 flex-1 !rounded-2xl !px-4 !py-2.5"
-                placeholder="Buscar en catalogo..."
-                value={searchQuery}
-                onChange={(event) => setSearchQuery(event.target.value)}
-              />
-              <button type="submit" className="btn btn-primary !h-11 !rounded-2xl !px-4 !py-2.5">
-                Buscar
-              </button>
-              <Link href="/catalogo" className="btn btn-ghost !h-11 !rounded-2xl !px-4 !py-2.5">
-                Filtros
-              </Link>
-            </form>
 
             <nav className="flex shrink-0 items-center gap-1.5 text-sm sm:gap-2">
               <button
@@ -148,11 +116,6 @@ export default function Header() {
                 <span className="hidden lg:inline">Tema</span>
               </button>
 
-              <NavPill href="/catalogo" active={!!isCatalogo}>
-                <Icon name="tag" />
-                <span className="hidden sm:inline">Catalogo</span>
-              </NavPill>
-
               <NavPill href="/carrito" active={!!isCarrito}>
                 <Icon name="bag" />
                 <span className="hidden sm:inline">Carrito</span>
@@ -162,18 +125,6 @@ export default function Header() {
               </NavPill>
             </nav>
           </div>
-
-          <form onSubmit={onSearchSubmit} className="mt-3 flex items-center gap-2 md:hidden">
-            <input
-              className="input !h-11 min-w-0 flex-1 !rounded-2xl !px-4 !py-2.5"
-              placeholder="Buscar en catalogo..."
-              value={searchQuery}
-              onChange={(event) => setSearchQuery(event.target.value)}
-            />
-            <button type="submit" className="btn btn-primary !h-11 !rounded-2xl !px-4 !py-2.5">
-              Buscar
-            </button>
-          </form>
         </div>
       </div>
     </header>

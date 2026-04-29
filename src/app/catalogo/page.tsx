@@ -4,8 +4,6 @@ import { getPublishedProducts, getStyles } from "@/lib/catalog";
 
 type CatalogSearchParams = {
   style?: string;
-  q?: string;
-  sort?: string;
 };
 
 export default async function CatalogPage({
@@ -20,22 +18,17 @@ export default async function CatalogPage({
     typeof params.style === "string" && styles.some((style) => style.id === params.style)
       ? params.style
       : "all";
-  const initialQuery = typeof params.q === "string" ? params.q : "";
-  const initialSort = typeof params.sort === "string" ? params.sort : "recent";
-
   return (
     <div className="space-y-6">
       <SectionTitle
-        title="Catalogo"
-        subtitle="Filtra por estilo, busca por nombre y ordena para encontrar piezas rapido."
+        title="Colecciones"
+        subtitle="Piezas disponibles organizadas por los estilos de la boutique."
       />
 
       <CatalogBrowser
         products={products}
         styles={styles}
         initialStyleId={initialStyleId}
-        initialQuery={initialQuery}
-        initialSort={initialSort}
       />
     </div>
   );

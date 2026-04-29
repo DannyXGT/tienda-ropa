@@ -3,7 +3,6 @@ export type SizeLabel = "S" | "M" | "L" | "XL";
 export type VariantSize = {
   id: string;
   size: SizeLabel;
-  stock: number;
   priceOverride: number | null;
   active: boolean;
 };
@@ -36,4 +35,8 @@ export type Style = {
   name: string;
   description?: string;
   productCount: number;
+};
+
+export type HomeGallery = {
+  images: string[];
 };

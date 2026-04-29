@@ -132,12 +132,6 @@ export const productType = defineType({
                       validation: (rule) => rule.required(),
                     }),
                     defineField({
-                      name: "stock",
-                      title: "Stock",
-                      type: "number",
-                      validation: (rule) => rule.required().min(0),
-                    }),
-                    defineField({
                       name: "priceOverride",
                       title: "Price override",
                       type: "number",
@@ -153,12 +147,11 @@ export const productType = defineType({
                   preview: {
                     select: {
                       size: "size",
-                      stock: "stock",
                       active: "active",
                     },
-                    prepare({ size, stock, active }) {
+                    prepare({ size, active }) {
                       return {
-                        title: `${size ?? "N/A"} - stock ${stock ?? 0}`,
+                        title: size ?? "N/A",
                         subtitle: active ? "Active" : "Inactive",
                       };
                     },

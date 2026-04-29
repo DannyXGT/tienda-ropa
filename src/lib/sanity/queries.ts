@@ -18,7 +18,6 @@ const PRODUCT_PROJECTION = `
     "sizes": sizes[]{
       _key,
       size,
-      stock,
       priceOverride,
       active
     }
@@ -36,4 +35,11 @@ export const PRODUCT_BY_SLUG_QUERY = `
   *[_type == "product" && published == true && slug.current == $slug][0] {
     ${PRODUCT_PROJECTION}
   }
+`;
+
+export const HOME_GALLERY_QUERY = `
+  *[_type == "homeGallery" && enabled == true]
+    | order(_createdAt desc)[0] {
+      "images": images[].asset->url
+    }
 `;

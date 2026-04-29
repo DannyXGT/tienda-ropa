@@ -17,7 +17,11 @@ const display = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "bea millis",
-  description: "Boutique online con catalogo por estilos y pedidos por WhatsApp",
+  description: "Boutique online con estilos seleccionados y pedidos personalizados",
+  icons: {
+    icon: "/logo.jpeg",
+    apple: "/logo.jpeg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

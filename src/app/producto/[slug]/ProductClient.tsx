@@ -2,17 +2,22 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import type { Product } from "@/lib/catalog.types";
+import type { Product, SizeLabel } from "@/lib/catalog.types";
 import { moneyGTQ } from "@/lib/money";
 import ColorSwatches from "@/components/ColorSwatches";
 import SizePicker from "@/components/SizePicker";
 import { getPriceForSize, getVisibleSizes } from "@/lib/pricing";
 import { useCart } from "@/state/cart";
 
+const SIZE_MEASUREMENTS: Record<SizeLabel, { bust: string; waist: string; hip: string }> = {
+  S: { bust: "84-88 cm", waist: "66-70 cm", hip: "92-96 cm" },
+  M: { bust: "89-93 cm", waist: "71-75 cm", hip: "97-101 cm" },
+  L: { bust: "94-100 cm", waist: "76-82 cm", hip: "102-108 cm" },
+  XL: { bust: "101-108 cm", waist: "83-90 cm", hip: "109-116 cm" },
+};
+
 export default function ProductClient({ product }: { product: Product }) {
-  const { addItem, clear } = useCart();
-  const router = useRouter();
+  const { addItem } = useCart();
 
   const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -68,15 +73,6 @@ export default function ProductClient({ product }: { product: Product }) {
 
     addItem(product, variant, selectedSize, qty);
     showFeedback("Producto agregado al carrito.");
-  }
-
-  function handleBuyNow() {
-    if (!variant || !selectedSize) return;
-
-    clear();
-    addItem(product, variant, selectedSize, qty);
-    showFeedback("Listo, te llevamos al carrito para finalizar.");
-    router.push("/carrito");
   }
 
   return (
@@ -148,18 +144,43 @@ export default function ProductClient({ product }: { product: Product }) {
           <div className="mt-6 space-y-2">
             <div className="flex items-center justify-between text-sm text-black/64">
               <span>Talla</span>
-              {selectedSize ? (
-                <span className="rounded-full bg-[#fce7f3] px-2.5 py-1 text-xs font-semibold text-[#9d174d]">
-                  Stock {selectedSize.stock}
-                </span>
-              ) : null}
+              {selectedSize ? <span className="font-semibold text-black">{selectedSize.size}</span> : null}
             </div>
 
             {sizes.length > 0 ? (
-              <SizePicker sizes={sizes} value={size} onChange={setSize} />
+              <>
+                <SizePicker sizes={sizes} value={size} onChange={setSize} />
+                <div className="measurementGuide mt-3 overflow-hidden rounded-2xl border border-black/8 bg-white/74">
+                  <div className="grid grid-cols-4 border-b border-black/8 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-black/48">
+                    <span>Talla</span>
+                    <span>Busto</span>
+                    <span>Cintura</span>
+                    <span>Cadera</span>
+                  </div>
+                  {sizes.map((item) => {
+                    const guide = SIZE_MEASUREMENTS[item.size];
+                    return (
+                      <div
+                        key={item.id}
+                        className={[
+                          "grid grid-cols-4 px-3 py-2 text-xs transition sm:text-sm",
+                          item.size === selectedSize?.size
+                            ? "bg-[#fce7f3] font-bold text-[#9d174d]"
+                            : "text-black/66",
+                        ].join(" ")}
+                      >
+                        <span>{item.size}</span>
+                        <span>{guide.bust}</span>
+                        <span>{guide.waist}</span>
+                        <span>{guide.hip}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
             ) : (
               <div className="rounded-xl border border-black/10 bg-white/70 px-3 py-2.5 text-sm text-black/52">
-                Sin tallas disponibles en este color.
+                No hay tallas activas en este color.
               </div>
             )}
           </div>
@@ -195,18 +216,6 @@ export default function ProductClient({ product }: { product: Product }) {
               </button>
             </div>
 
-            <button
-              className={
-                canAddToCart
-                  ? "btn w-full border-[#f472b6]/45 bg-[#fce7f3] text-[#9d174d] shadow-[0_12px_24px_rgba(157,23,77,.18)] hover:bg-[#fbcfe8]"
-                  : "btn w-full cursor-not-allowed bg-black/10 text-black/40"
-              }
-              onClick={handleBuyNow}
-              disabled={!canAddToCart}
-            >
-              Comprar ahora
-            </button>
-
             <div
               role="status"
               aria-live="polite"
@@ -219,10 +228,6 @@ export default function ProductClient({ product }: { product: Product }) {
             >
               {feedback ?? " "}
             </div>
-          </div>
-
-          <div className="mt-4 text-xs text-black/47">
-            * Finalizas el pedido por WhatsApp (sin tarjeta).
           </div>
         </div>
       </section>
