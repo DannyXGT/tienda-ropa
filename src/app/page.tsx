@@ -1,18 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
-import type { CSSProperties } from "react";
 import ProductCard from "@/components/ProductCard";
 import type { Product, Style } from "@/lib/catalog.types";
 import { getHomeGalleryImages, getPublishedProducts, getStyles } from "@/lib/catalog";
-
-function IconArrow() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-      <path d="M7 17L17 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path d="M9 7h8v8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function pickHeroImages(images: string[]): string[] {
   const fallback = [
@@ -106,17 +96,14 @@ function StyleNav({ styles }: { styles: Style[] }) {
 
   return (
     <section className="styleDeck revealIn">
-      <div className="flex min-w-0 items-center gap-2 overflow-x-auto py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:flex-wrap sm:overflow-visible">
+      <div className="styleTabsRail flex min-w-0 items-center gap-6 overflow-x-auto py-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:gap-8">
         {links.slice(0, 8).map((style, index) => (
           <Link
             key={style.id}
             href={style.href}
-            className="categoryButton group"
-            style={{ "--category-index": index } as CSSProperties}
+            className={["styleTab", index === 0 ? "is-active" : ""].join(" ")}
           >
-            <span className="categoryButtonMark" aria-hidden="true" />
-            <span className="categoryButtonText">{style.name}</span>
-            <IconArrow />
+            {style.name}
           </Link>
         ))}
       </div>
@@ -159,22 +146,22 @@ export default async function HomePage() {
 
       <section className="card homeHero revealIn overflow-hidden">
         <div className="grid gap-0 md:grid-cols-[1.02fr_.98fr]">
-          <div className="order-2 p-5 pt-6 sm:p-7 md:order-1 md:p-10">
+          <div className="order-1 p-5 pt-7 sm:p-7 sm:pt-8 md:order-1 md:p-10 md:pt-11">
             <div className="pill w-fit">
               Nueva temporada
             </div>
 
-            <h1 className="displayText mt-4 text-[2rem] leading-[1.02] font-semibold sm:text-[2.2rem] md:mt-5 md:text-[3.1rem]">
+            <h1 className="displayText mt-4 max-w-[13ch] text-[2rem] leading-[1.04] font-semibold sm:text-[2.15rem] md:mt-5 md:text-[2.9rem]">
               Tu boutique de vestidos elegantes, lista para ti.
             </h1>
 
-            <p className="mt-3 max-w-[52ch] text-[1.02rem] text-black/67 sm:text-[1.05rem]">
+            <p className="mt-3 max-w-[50ch] text-[1rem] leading-relaxed text-black/67 sm:text-[1.03rem]">
               Descubre piezas exclusivas, elige tu color favorito y encuentra el ajuste que acompana
               tu proximo look.
             </p>
           </div>
 
-          <div className="order-1 heroMediaSurface relative min-h-[380px] sm:min-h-[470px] md:order-2 md:min-h-[560px]">
+          <div className="order-2 heroMediaSurface relative min-h-[260px] sm:min-h-[470px] md:order-2 md:min-h-[560px]">
             <div className="heroPhotoGrid absolute inset-0 p-3 sm:p-4 md:p-6">
               {heroImages.map((src, index) => (
                 <div key={`${src}-${index}`} className={`heroTile heroTile${index + 1}`}>
@@ -194,21 +181,9 @@ export default async function HomePage() {
       </section>
 
       <ProductSection
-        title="Novedades"
+        title="Nuevo ingreso"
         subtitle="Piezas recien agregadas a la tienda."
         products={newArrivals}
-      />
-
-      <ProductSection
-        title="Mas pedidos"
-        subtitle="Los favoritos que mas eligen nuestras clientas."
-        products={bestSellers}
-      />
-
-      <ProductSection
-        title="Destacados"
-        subtitle="Una seleccion especial de la boutique."
-        products={featured.length ? featured : recent.slice(0, 4)}
       />
     </div>
   );
