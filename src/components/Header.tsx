@@ -2,9 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/state/cart";
+import { WHATSAPP_PHONE } from "@/lib/storeConfig";
 
 type ThemeMode = "light" | "dark";
 
@@ -56,8 +57,18 @@ function NavPill({ href, active, children }: { href: string; active: boolean; ch
 export default function Header() {
   const { count } = useCart();
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState<ThemeMode>("light");
 
   const isCarrito = pathname?.startsWith("/carrito");
+  const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}`;
+  const navLinks = [
+    { href: "/", label: "Inicio" },
+    { href: "/estilos/vestidos", label: "Vestidos" },
+    { href: "/estilos/enterizos", label: "Enterizos" },
+    { href: "/#nuevo-ingreso", label: "Nuevo ingreso" },
+    { href: whatsappHref, label: "Contacto", external: true },
+  ];
 
   useEffect(() => {
     if (typeof window === "undefined") {
@@ -72,7 +83,23 @@ export default function Header() {
       stored === "dark" || stored === "light" ? stored : preferred;
 
     document.documentElement.setAttribute("data-theme", initialTheme);
+    setThemeMode(initialTheme);
   }, []);
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!sidebarOpen) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
 
   function onToggleTheme() {
     const currentTheme: ThemeMode =
@@ -81,6 +108,7 @@ export default function Header() {
 
     document.documentElement.setAttribute("data-theme", nextTheme);
     window.localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    setThemeMode(nextTheme);
   }
 
   return (
@@ -88,6 +116,17 @@ export default function Header() {
       <div className="containerX">
         <div className="py-3">
           <div className="flex items-center justify-between gap-2 sm:gap-3">
+            <button
+              type="button"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-transparent bg-[rgb(var(--bg))] text-black/75 md:hidden"
+              onClick={() => setSidebarOpen((prev) => !prev)}
+              aria-label={sidebarOpen ? "Cerrar menu" : "Abrir menu"}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+
             <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
               <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(18,18,24,.14)] ring-1 ring-black/8 sm:h-14 sm:w-14">
                 <Image src="/logo.jpeg" alt="Bea Millis" fill sizes="56px" className="object-cover" priority />
@@ -101,6 +140,30 @@ export default function Header() {
                 </span>
               </span>
             </Link>
+
+            <nav className="hidden items-center gap-1 text-sm md:flex">
+              {navLinks.map((link) => {
+                const active =
+                  !link.external &&
+                  !link.href.startsWith("/#") &&
+                  ((link.href === "/" && pathname === "/") ||
+                    (link.href !== "/" && pathname?.startsWith(link.href)));
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                    className={[
+                      "headerNavLink",
+                      active ? "is-active" : "",
+                    ].join(" ")}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
 
             <nav className="flex shrink-0 items-center gap-1.5 text-sm sm:gap-2">
               <button
@@ -118,7 +181,7 @@ export default function Header() {
 
               <NavPill href="/carrito" active={!!isCarrito}>
                 <Icon name="bag" />
-                <span className="hidden sm:inline">Carrito</span>
+                <span className="hidden sm:inline md:hidden lg:inline">Carrito</span>
                 <span className="ml-0.5 rounded-full bg-black/6 px-2 py-0.5 text-xs font-black sm:ml-1">
                   {count}
                 </span>
@@ -126,6 +189,113 @@ export default function Header() {
             </nav>
           </div>
         </div>
+      </div>
+
+      <div
+        className={[
+          "fixed inset-0 z-[9998] md:hidden transition-opacity duration-200",
+          sidebarOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
+        ].join(" ")}
+      >
+        <button
+          type="button"
+          className={[
+            "absolute inset-0 backdrop-blur-[2px]",
+            themeMode === "dark" ? "bg-black/50" : "bg-black/20",
+          ].join(" ")}
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Cerrar menu lateral"
+        />
+
+        <aside
+          className={[
+            "fixed left-4 right-4 top-[76px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-transform duration-300 ease-out",
+            sidebarOpen ? "translate-x-0" : "-translate-x-[110%]",
+            themeMode === "dark"
+              ? "border-white/10 bg-neutral-950 text-white"
+              : "border-neutral-200 bg-[#fbf7f1] text-neutral-950",
+          ].join(" ")}
+        >
+          <div
+            className={[
+              "flex items-center justify-between border-b px-1 pb-2.5",
+              themeMode === "dark" ? "border-white/10" : "border-neutral-200",
+            ].join(" ")}
+          >
+            <span className="text-[15px] font-semibold tracking-wide">Menú</span>
+            <button
+              type="button"
+              className={[
+                "inline-flex h-9 w-9 items-center justify-center rounded-xl border",
+                themeMode === "dark"
+                  ? "border-white/15 bg-white/5 text-white"
+                  : "border-neutral-300 bg-white text-neutral-800",
+              ].join(" ")}
+              onClick={() => setSidebarOpen(false)}
+              aria-label="Cerrar menú"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
+
+          <nav className="pt-2.5">
+            <ul className="space-y-2">
+              {navLinks.map((link) => {
+                const active =
+                  !link.external &&
+                  !link.href.startsWith("/#") &&
+                  ((link.href === "/" && pathname === "/") ||
+                    (link.href !== "/" && pathname?.startsWith(link.href)));
+                return (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      onClick={() => setSidebarOpen(false)}
+                      className={[
+                        "flex h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition",
+                        active
+                          ? themeMode === "dark"
+                            ? "bg-white/10 text-rose-100"
+                            : "bg-rose-100 text-rose-700"
+                          : themeMode === "dark"
+                            ? "text-neutral-200 hover:bg-white/10"
+                            : "text-neutral-800 hover:bg-white",
+                      ].join(" ")}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
+
+          <div
+            className={[
+              "mt-2.5 border-t pt-2.5",
+              themeMode === "dark" ? "border-white/10" : "border-neutral-200",
+            ].join(" ")}
+          >
+            <Link
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setSidebarOpen(false)}
+              className={[
+                "flex h-10 items-center justify-center rounded-2xl border text-sm font-medium transition",
+                themeMode === "dark"
+                  ? "border-white/15 bg-white/5 text-neutral-100 hover:bg-white/10"
+                  : "border-neutral-300 bg-white text-neutral-800 hover:bg-rose-50",
+              ].join(" ")}
+            >
+              Pedidos por WhatsApp
+            </Link>
+          </div>
+        </aside>
       </div>
     </header>
   );

@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <Link href={`/producto/${product.slug}`} className="block revealIn">
-      <article className="group card cardHover overflow-hidden">
+      <article className="group card cardHover productCard overflow-hidden">
         <div className="relative aspect-[4/5] w-full bg-black/5">
           {img1 ? (
             <>
@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
                 src={img1}
                 alt={product.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-[1.045]"
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
               />
               <Image
                 src={img2}
@@ -36,6 +36,9 @@ export default function ProductCard({ product }: { product: Product }) {
           <div className="absolute left-3 top-3 pill bg-white/86">
             {product.variants.length} colores
           </div>
+          <div className="productDetailCta absolute inset-x-3 bottom-3 rounded-full border border-white/28 bg-black/30 px-3 py-1.5 text-center text-xs font-semibold tracking-[.02em] text-white/94 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
+            Ver detalle
+          </div>
         </div>
 
         <div className="p-3.5 sm:p-4">
@@ -49,7 +52,7 @@ export default function ProductCard({ product }: { product: Product }) {
               </div>
             </div>
 
-            <div className="shrink-0 rounded-xl bg-[#fce7f3] px-2 py-1.5 text-[.9rem] font-extrabold text-[#9d174d] transition-transform duration-300 group-hover:-translate-y-0.5 sm:px-2.5">
+            <div className="productPriceChip shrink-0 rounded-xl px-2 py-1.5 text-[.9rem] font-extrabold transition-transform duration-300 group-hover:-translate-y-0.5 sm:px-2.5">
               {moneyGTQ(startingPrice)}
             </div>
           </div>
