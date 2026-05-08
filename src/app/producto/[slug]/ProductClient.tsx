@@ -17,11 +17,11 @@ const SIZE_MEASUREMENTS: Record<SizeLabel, { bust: string; waist: string; hip: s
 };
 
 const SIZE_FIT_NOTES: Record<string, string> = {
-  XS: "XS esta disenado para chicas que usan pantalon talla 0, talla 1/2 maximo.",
-  S: "S esta disenado para chicas que usan pantalon talla 2/3.",
-  M: "M esta disenado para chicas que usan pantalon talla 3/4, talla 5/6 maximo.",
-  L: "L esta disenado para chicas que usan pantalon talla 5/6, talla 7/8 maximo.",
-  XL: "XL esta disenado para chicas que usan pantalon talla 10, y maximo 14.",
+  XS: "XS está diseñado para chicas que usan pantalón talla 0, talla 1/2 máximo.",
+  S: "S está diseñado para chicas que usan pantalón talla 2/3.",
+  M: "M está diseñado para chicas que usan pantalón talla 3/4, talla 5/6 máximo.",
+  L: "L está diseñado para chicas que usan pantalón talla 5/6, talla 7/8 máximo.",
+  XL: "XL está diseñado para chicas que usan pantalón talla 10, y máximo 14.",
 };
 
 export default function ProductClient({ product }: { product: Product }) {
@@ -172,12 +172,9 @@ export default function ProductClient({ product }: { product: Product }) {
                       <span>{SIZE_MEASUREMENTS[selectedSize.size].waist}</span>
                       <span>{SIZE_MEASUREMENTS[selectedSize.size].hip}</span>
                     </div>
-                  </div>
-                ) : null}
-
-                {selectedSize ? (
-                  <div className="mt-2.5 rounded-xl border border-black/10 bg-white/74 px-3 py-2.5 text-sm text-black/70">
-                    {SIZE_FIT_NOTES[selectedSize.size]}
+                    <div className="border-t border-black/8 px-3 py-2.5 text-sm text-black/70">
+                      {SIZE_FIT_NOTES[selectedSize.size]}
+                    </div>
                   </div>
                 ) : null}
               </>

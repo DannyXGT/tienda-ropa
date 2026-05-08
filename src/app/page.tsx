@@ -129,7 +129,7 @@ export default async function HomePage() {
       <section className="card homeHero revealIn overflow-hidden">
         <div className="grid gap-0 md:grid-cols-[1.1fr_.9fr]">
           <div className="order-1 p-4 pt-5 sm:p-6 sm:pt-7 md:order-1 md:p-7 md:pt-7">
-            <h1 className="displayText mt-3 max-w-[16ch] text-[1.48rem] leading-[1.08] font-semibold sm:text-[1.78rem] md:mt-4 md:text-[2.35rem]">
+            <h1 className="displayText mt-3 mx-auto max-w-[16ch] text-center text-[1.48rem] leading-[1.08] font-semibold sm:text-[1.78rem] md:mt-4 md:mx-0 md:text-left md:text-[2.35rem]">
               Ten la libertad de usar lo que te haga sentir única
             </h1>
 
