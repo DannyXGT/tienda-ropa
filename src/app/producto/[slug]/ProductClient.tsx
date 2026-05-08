@@ -16,6 +16,14 @@ const SIZE_MEASUREMENTS: Record<SizeLabel, { bust: string; waist: string; hip: s
   XL: { bust: "101-108 cm", waist: "83-90 cm", hip: "109-116 cm" },
 };
 
+const SIZE_FIT_NOTES: Record<string, string> = {
+  XS: "XS esta disenado para chicas que usan pantalon talla 0, talla 1/2 maximo.",
+  S: "S esta disenado para chicas que usan pantalon talla 2/3.",
+  M: "M esta disenado para chicas que usan pantalon talla 3/4, talla 5/6 maximo.",
+  L: "L esta disenado para chicas que usan pantalon talla 5/6, talla 7/8 maximo.",
+  XL: "XL esta disenado para chicas que usan pantalon talla 10, y maximo 14.",
+};
+
 export default function ProductClient({ product }: { product: Product }) {
   const { addItem } = useCart();
 
@@ -150,33 +158,28 @@ export default function ProductClient({ product }: { product: Product }) {
             {sizes.length > 0 ? (
               <>
                 <SizePicker sizes={sizes} value={size} onChange={setSize} />
-                <div className="measurementGuide mt-3 overflow-hidden rounded-2xl border border-black/8 bg-white/74">
-                  <div className="grid grid-cols-4 border-b border-black/8 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-black/48">
-                    <span>Talla</span>
-                    <span>Busto</span>
-                    <span>Cintura</span>
-                    <span>Cadera</span>
+                {selectedSize ? (
+                  <div className="measurementGuide mt-3 overflow-hidden rounded-2xl border border-black/8 bg-white/74">
+                    <div className="grid grid-cols-4 border-b border-black/8 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em] text-black/48">
+                      <span>Talla</span>
+                      <span>Busto</span>
+                      <span>Cintura</span>
+                      <span>Cadera</span>
+                    </div>
+                    <div className="grid grid-cols-4 bg-[#fce7f3] px-3 py-2 text-xs font-bold text-[#9d174d] sm:text-sm">
+                      <span>{selectedSize.size}</span>
+                      <span>{SIZE_MEASUREMENTS[selectedSize.size].bust}</span>
+                      <span>{SIZE_MEASUREMENTS[selectedSize.size].waist}</span>
+                      <span>{SIZE_MEASUREMENTS[selectedSize.size].hip}</span>
+                    </div>
                   </div>
-                  {sizes.map((item) => {
-                    const guide = SIZE_MEASUREMENTS[item.size];
-                    return (
-                      <div
-                        key={item.id}
-                        className={[
-                          "grid grid-cols-4 px-3 py-2 text-xs transition sm:text-sm",
-                          item.size === selectedSize?.size
-                            ? "bg-[#fce7f3] font-bold text-[#9d174d]"
-                            : "text-black/66",
-                        ].join(" ")}
-                      >
-                        <span>{item.size}</span>
-                        <span>{guide.bust}</span>
-                        <span>{guide.waist}</span>
-                        <span>{guide.hip}</span>
-                      </div>
-                    );
-                  })}
-                </div>
+                ) : null}
+
+                {selectedSize ? (
+                  <div className="mt-2.5 rounded-xl border border-black/10 bg-white/74 px-3 py-2.5 text-sm text-black/70">
+                    {SIZE_FIT_NOTES[selectedSize.size]}
+                  </div>
+                ) : null}
               </>
             ) : (
               <div className="rounded-xl border border-black/10 bg-white/70 px-3 py-2.5 text-sm text-black/52">

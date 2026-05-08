@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/lib/catalog.types";
@@ -78,7 +78,7 @@ function ProductSection({
         </div>
       ) : (
         <div className="card emptyStateCard p-5 sm:p-7">
-          <span className="emptyStateBadge">Atencion boutique</span>
+          <span className="emptyStateBadge">ATENCION BOUTIQUE</span>
           <h3 className="displayText text-[1.42rem] font-semibold sm:text-[1.65rem]">
             Muy pronto nuevas piezas
           </h3>
@@ -122,23 +122,19 @@ export default async function HomePage() {
   const heroImages = pickHeroImages(homeGalleryImages.length ? homeGalleryImages : productHeroImages);
   const heroMain = heroImages[0];
   const heroSecondary = heroImages.slice(1, 4);
-  const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent("Hola, quiero asesoría para elegir un look 💖")}`;
+  const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent("Hola, quiero asesoria para elegir un look")}`;
 
   return (
     <div className="space-y-3 md:space-y-5">
       <section className="card homeHero revealIn overflow-hidden">
         <div className="grid gap-0 md:grid-cols-[1.1fr_.9fr]">
           <div className="order-1 p-4 pt-5 sm:p-6 sm:pt-7 md:order-1 md:p-7 md:pt-7">
-            <div className="pill w-fit">
-              Nueva temporada
-            </div>
-
             <h1 className="displayText mt-3 max-w-[16ch] text-[1.48rem] leading-[1.08] font-semibold sm:text-[1.78rem] md:mt-4 md:text-[2.35rem]">
-              Vestidos que elevan tu estilo en cada ocasion.
+              Ten la libertad de usar lo que te haga sentir única
             </h1>
 
             <p className="mt-2 max-w-[46ch] text-[.93rem] leading-relaxed text-black/67 sm:text-[.98rem]">
-              Descubre piezas elegantes, femeninas y listas para tu proximo evento.
+              Viste lo que eres, sin moldes, sin estereotipos, solo tu personalidad.
             </p>
 
             <div className="mt-3 md:hidden">
@@ -196,3 +192,6 @@ export default async function HomePage() {
     </div>
   );
 }
+
+
+
