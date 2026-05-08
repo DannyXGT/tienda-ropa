@@ -129,24 +129,40 @@ export default async function HomePage() {
       <section className="card homeHero revealIn overflow-hidden">
         <div className="grid gap-0 md:grid-cols-[1.1fr_.9fr]">
           <div className="order-1 p-4 pt-5 sm:p-6 sm:pt-7 md:order-1 md:p-7 md:pt-7">
-            <h1 className="displayText mt-3 mx-auto max-w-[16ch] text-center text-[1.48rem] leading-[1.08] font-semibold sm:text-[1.78rem] md:mt-4 md:mx-0 md:text-left md:text-[2.35rem]">
+            <h1 className="displayText mt-3 w-full max-w-[14ch] mx-auto px-1 text-center text-[1.48rem] leading-[1.08] font-semibold sm:max-w-[16ch] sm:text-[1.78rem] md:mt-4 md:mx-0 md:max-w-[16ch] md:px-0 md:text-left md:text-[2.35rem]">
               Ten la libertad de usar lo que te haga sentir única
             </h1>
 
-            <p className="mt-2 max-w-[46ch] text-[.93rem] leading-relaxed text-black/67 sm:text-[.98rem]">
+            <p className="mt-2 w-full max-w-[46ch] text-center text-[.93rem] leading-relaxed text-black/67 sm:text-[.98rem] md:text-left">
               Viste lo que eres, sin moldes, sin estereotipos, solo tu personalidad.
             </p>
 
             <div className="mt-3 md:hidden">
-              <div className="heroMobileMedia relative aspect-[16/10] overflow-hidden rounded-2xl">
-                <Image
-                  src={heroMain}
-                  alt="Look principal Bea Millis"
-                  fill
-                  sizes="100vw"
-                  className="object-cover"
-                  priority
-                />
+              <div className="grid grid-cols-[1fr_.95fr] gap-2 rounded-2xl border border-black/8 bg-[#0f1426]/45 p-2">
+                <div className="relative min-h-[220px] overflow-hidden rounded-2xl">
+                  <Image
+                    src={heroMain}
+                    alt="Look principal Bea Millis"
+                    fill
+                    sizes="48vw"
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+
+                <div className="grid grid-rows-3 gap-2">
+                  {heroSecondary.map((src, index) => (
+                    <div key={`${src}-${index}`} className="relative min-h-[68px] overflow-hidden rounded-2xl">
+                      <Image
+                        src={src}
+                        alt={`Look secundario Bea Millis ${index + 1}`}
+                        fill
+                        sizes="44vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
