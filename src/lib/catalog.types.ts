@@ -1,4 +1,4 @@
-export type SizeLabel = "S" | "M" | "L" | "XL";
+export type SizeLabel = "XS" | "S" | "M" | "L" | "XL";
 
 export type VariantSize = {
   id: string;

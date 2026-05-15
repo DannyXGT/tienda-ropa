@@ -111,11 +111,8 @@ export default async function HomePage() {
     recent,
     4
   );
-  const newArrivals = takeUnique(
-    products.filter((product) => product.newArrival),
-    recent,
-    4
-  );
+  const newArrivals = recent.filter((product) => product.newArrival);
+  const allProducts = recent;
   const productHeroImages = featured.flatMap((product) =>
     product.variants.flatMap((variant) => variant.images)
   );
@@ -203,6 +200,12 @@ export default async function HomePage() {
         title="Nuevo ingreso"
         subtitle="Piezas recien agregadas a la tienda."
         products={newArrivals}
+        whatsappHref={whatsappHref}
+      />
+      <ProductSection
+        title="Todos los productos"
+        subtitle="Explora toda la coleccion disponible."
+        products={allProducts}
         whatsappHref={whatsappHref}
       />
     </div>

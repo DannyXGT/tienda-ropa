@@ -45,7 +45,7 @@ type SanityProduct = {
   variants?: SanityVariant[];
 };
 
-const ALLOWED_SIZES = new Set<SizeLabel>(["S", "M", "L", "XL"]);
+const ALLOWED_SIZES = new Set<SizeLabel>(["XS", "S", "M", "L", "XL"]);
 const COLOR_NAME_TO_HEX: Record<string, string> = {
   rojo: "#dc2626",
   red: "#dc2626",

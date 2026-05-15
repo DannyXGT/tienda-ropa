@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
@@ -10,10 +10,11 @@ import { getPriceForSize, getVisibleSizes } from "@/lib/pricing";
 import { useCart } from "@/state/cart";
 
 const SIZE_MEASUREMENTS: Record<SizeLabel, { bust: string; waist: string; hip: string }> = {
-  S: { bust: "84-88 cm", waist: "66-70 cm", hip: "92-96 cm" },
-  M: { bust: "89-93 cm", waist: "71-75 cm", hip: "97-101 cm" },
-  L: { bust: "94-100 cm", waist: "76-82 cm", hip: "102-108 cm" },
-  XL: { bust: "101-108 cm", waist: "83-90 cm", hip: "109-116 cm" },
+  XS: { bust: "75 cm", waist: "63 cm", hip: "75-80 cm" },
+  S: { bust: "80 cm", waist: "64 cm", hip: "88-90 cm" },
+  M: { bust: "90 cm", waist: "72 cm", hip: "90-104 cm" },
+  L: { bust: "100 cm", waist: "85 cm", hip: "92-110 cm" },
+  XL: { bust: "110 cm", waist: "95 cm", hip: "110-125 cm" },
 };
 
 const SIZE_FIT_NOTES: Record<string, string> = {
@@ -28,6 +29,7 @@ export default function ProductClient({ product }: { product: Product }) {
   const { addItem } = useCart();
 
   const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
 
   const [colorId, setColorId] = useState(product.variants[0]?.colorId ?? "");
@@ -83,13 +85,33 @@ export default function ProductClient({ product }: { product: Product }) {
     showFeedback("Producto agregado al carrito.");
   }
 
+  function handleCarouselScroll() {
+    if (!carouselRef.current) return;
+    const slideWidth = carouselRef.current.clientWidth;
+    if (slideWidth <= 0) return;
+    const nextIndex = Math.round(carouselRef.current.scrollLeft / slideWidth);
+    if (nextIndex !== imgIdx) {
+      setImgIdx(Math.max(0, Math.min(nextIndex, Math.max(images.length - 1, 0))));
+    }
+  }
+
   return (
     <div className="grid gap-5 sm:gap-6 lg:gap-8 lg:grid-cols-[1.04fr_.96fr]">
       <section className="revealIn space-y-4">
         <div className="card overflow-hidden">
-          <div className="relative h-[50vh] min-h-[280px] max-h-[620px] w-full bg-[#fdf2f8] sm:min-h-[340px] md:h-[64vh] lg:h-[68vh]">
-            {images[imgIdx] ? (
-              <Image src={images[imgIdx]} alt={product.name} fill className="object-cover" />
+          <div
+            ref={carouselRef}
+            onScroll={handleCarouselScroll}
+            className="relative h-[40vh] min-h-[224px] max-h-[500px] w-full snap-x snap-mandatory overflow-x-auto bg-[#fdf2f8] sm:min-h-[272px] md:h-[52vh] lg:h-[54vh]"
+          >
+            {images.length > 0 ? (
+              <div className="flex h-full w-full">
+                {images.map((src, index) => (
+                  <div key={`${src}-${index}`} className="relative h-full min-w-full snap-center">
+                    <Image src={src} alt={`${product.name} ${index + 1}`} fill className="object-cover" />
+                  </div>
+                ))}
+              </div>
             ) : (
               <div className="flex h-full items-center justify-center text-black/40">Sin imagen</div>
             )}
@@ -99,31 +121,6 @@ export default function ProductClient({ product }: { product: Product }) {
             </div>
           </div>
         </div>
-
-        {images.length > 1 && (
-          <div className="grid grid-cols-4 gap-2 sm:grid-cols-5">
-            {images.map((src, index) => (
-              <button
-                key={src}
-                type="button"
-                onClick={() => setImgIdx(index)}
-                className={[
-                  "relative h-16 overflow-hidden rounded-2xl ring-1 transition md:h-20 hover:-translate-y-[1px]",
-                  index === imgIdx
-                    ? "ring-[#ec4899] shadow-[0_8px_20px_rgba(157,23,77,.22)]"
-                    : "ring-black/10 hover:ring-black/25",
-                ].join(" ")}
-              >
-                <Image
-                  src={src}
-                  alt={`${product.name} ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        )}
       </section>
 
       <section className="revealIn revealInDelay1 lg:pt-1">
@@ -137,9 +134,9 @@ export default function ProductClient({ product }: { product: Product }) {
             {moneyGTQ(displayPrice)}
           </div>
 
-          <p className="mt-3 text-[1rem] text-black/62">
-            {product.description || "Pieza seleccionada en bea millis."}
-          </p>
+          {product.description ? (
+            <p className="mt-3 text-[1rem] text-black/62">{product.description}</p>
+          ) : null}
 
           <div className="mt-7 space-y-2">
             <div className="flex items-center justify-between text-sm text-black/64">
