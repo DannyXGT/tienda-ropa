@@ -1,6 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 
-const sizeOptions = ["S", "M", "L", "XL"];
+const sizeOptions = ["XS", "S", "M", "L", "XL"];
 
 export const productType = defineType({
   name: "product",
