@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
 import Image from "next/image";
 import type { Product, SizeLabel } from "@/lib/catalog.types";
 import { moneyGTQ } from "@/lib/money";
@@ -30,7 +30,11 @@ export default function ProductClient({ product }: { product: Product }) {
 
   const feedbackTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const carouselRef = useRef<HTMLDivElement | null>(null);
+  const dragStartXRef = useRef(0);
+  const dragStartScrollRef = useRef(0);
+  const isPointerDraggingRef = useRef(false);
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
 
   const [colorId, setColorId] = useState(product.variants[0]?.colorId ?? "");
   const variant = useMemo(
@@ -95,14 +99,45 @@ export default function ProductClient({ product }: { product: Product }) {
     }
   }
 
+  function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse" || !carouselRef.current) return;
+    isPointerDraggingRef.current = true;
+    dragStartXRef.current = event.clientX;
+    dragStartScrollRef.current = carouselRef.current.scrollLeft;
+    setIsDragging(true);
+    carouselRef.current.setPointerCapture(event.pointerId);
+  }
+
+  function handlePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
+    if (!isPointerDraggingRef.current || !carouselRef.current) return;
+    const delta = event.clientX - dragStartXRef.current;
+    carouselRef.current.scrollLeft = dragStartScrollRef.current - delta;
+  }
+
+  function handlePointerUp(event: ReactPointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== "mouse" || !carouselRef.current) return;
+    isPointerDraggingRef.current = false;
+    setIsDragging(false);
+    if (carouselRef.current.hasPointerCapture(event.pointerId)) {
+      carouselRef.current.releasePointerCapture(event.pointerId);
+    }
+  }
+
   return (
-    <div className="grid gap-5 sm:gap-6 lg:gap-8 lg:grid-cols-[1.04fr_.96fr]">
-      <section className="revealIn space-y-4">
+    <div className="grid items-start gap-5 sm:gap-6 lg:gap-8 lg:grid-cols-[1.05fr_.95fr]">
+      <section className="revealIn space-y-4 lg:sticky lg:top-24">
         <div className="card overflow-hidden">
           <div
             ref={carouselRef}
             onScroll={handleCarouselScroll}
-            className="relative h-[40vh] min-h-[224px] max-h-[500px] w-full snap-x snap-mandatory overflow-x-auto bg-[#fdf2f8] sm:min-h-[272px] md:h-[52vh] lg:h-[54vh]"
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            className={[
+              "relative h-[40vh] min-h-[224px] max-h-[520px] w-full snap-x snap-mandatory overflow-x-auto bg-[#fdf2f8] sm:min-h-[272px] md:h-[52vh] lg:h-[62vh] lg:min-h-[620px] lg:max-h-[760px]",
+              isDragging ? "cursor-grabbing select-none" : "cursor-grab",
+            ].join(" ")}
           >
             {images.length > 0 ? (
               <div className="flex h-full w-full">
@@ -116,7 +151,7 @@ export default function ProductClient({ product }: { product: Product }) {
               <div className="flex h-full items-center justify-center text-black/40">Sin imagen</div>
             )}
 
-            <div className="absolute left-4 top-4 pill bg-white/88">
+            <div className="absolute left-4 top-4 z-20 rounded-full bg-black/55 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
               {images.length ? `${imgIdx + 1} / ${images.length}` : "1 / 1"}
             </div>
           </div>

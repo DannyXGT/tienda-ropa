@@ -13,7 +13,7 @@ export const sanityClient =
         projectId: normalizedProjectId,
         dataset: normalizedDataset,
         apiVersion: "2025-01-01",
-        useCdn: true,
+        useCdn: false,
         perspective: "published",
       })
     : null;

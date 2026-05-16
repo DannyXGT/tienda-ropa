@@ -5,6 +5,8 @@ import type { Product } from "@/lib/catalog.types";
 import { getHomeGalleryImages, getPublishedProducts } from "@/lib/catalog";
 import { WHATSAPP_PHONE } from "@/lib/storeConfig";
 
+export const revalidate = 0;
+
 function pickHeroImages(images: string[]): string[] {
   const fallback = [
     "/products/set-linen/beige-1.jpg",

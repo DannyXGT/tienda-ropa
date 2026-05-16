@@ -2,6 +2,8 @@ import SectionTitle from "@/components/SectionTitle";
 import ProductCard from "@/components/ProductCard";
 import { getProductsByStyle, getStyleById } from "@/lib/catalog";
 
+export const revalidate = 0;
+
 export default async function StyleDetailPage({
   params,
 }: {

@@ -6,6 +6,8 @@ type CatalogSearchParams = {
   style?: string;
 };
 
+export const revalidate = 0;
+
 export default async function CatalogPage({
   searchParams,
 }: {
