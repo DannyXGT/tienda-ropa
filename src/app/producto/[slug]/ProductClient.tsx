@@ -33,6 +33,7 @@ export default function ProductClient({ product }: { product: Product }) {
   const dragStartXRef = useRef(0);
   const dragStartScrollRef = useRef(0);
   const isPointerDraggingRef = useRef(false);
+  const snapTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -54,6 +55,10 @@ export default function ProductClient({ product }: { product: Product }) {
     const nextVariant = product.variants.find((item) => item.colorId === next) ?? product.variants[0];
     const nextSizes = nextVariant ? getVisibleSizes(nextVariant) : [];
     setSize(nextSizes[0]?.size ?? "");
+
+    if (carouselRef.current) {
+      carouselRef.current.scrollTo({ left: 0, behavior: "auto" });
+    }
   }
 
   const images = variant?.images ?? [];
@@ -66,8 +71,23 @@ export default function ProductClient({ product }: { product: Product }) {
       if (feedbackTimeoutRef.current) {
         clearTimeout(feedbackTimeoutRef.current);
       }
+      if (snapTimeoutRef.current) {
+        clearTimeout(snapTimeoutRef.current);
+      }
     };
   }, []);
+
+  function snapToNearestImage(behavior: ScrollBehavior = "smooth") {
+    if (!carouselRef.current) return;
+    const slideWidth = carouselRef.current.clientWidth;
+    if (slideWidth <= 0) return;
+    const targetIndex = Math.max(
+      0,
+      Math.min(Math.round(carouselRef.current.scrollLeft / slideWidth), Math.max(images.length - 1, 0))
+    );
+    carouselRef.current.scrollTo({ left: targetIndex * slideWidth, behavior });
+    setImgIdx(targetIndex);
+  }
 
   function showFeedback(message: string) {
     setFeedback(message);
@@ -97,6 +117,15 @@ export default function ProductClient({ product }: { product: Product }) {
     if (nextIndex !== imgIdx) {
       setImgIdx(Math.max(0, Math.min(nextIndex, Math.max(images.length - 1, 0))));
     }
+
+    if (snapTimeoutRef.current) {
+      clearTimeout(snapTimeoutRef.current);
+    }
+    if (!isPointerDraggingRef.current) {
+      snapTimeoutRef.current = setTimeout(() => {
+        snapToNearestImage("smooth");
+      }, 90);
+    }
   }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLDivElement>) {
@@ -121,6 +150,7 @@ export default function ProductClient({ product }: { product: Product }) {
     if (carouselRef.current.hasPointerCapture(event.pointerId)) {
       carouselRef.current.releasePointerCapture(event.pointerId);
     }
+    snapToNearestImage("smooth");
   }
 
   return (
@@ -135,15 +165,15 @@ export default function ProductClient({ product }: { product: Product }) {
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
             className={[
-              "relative h-[40vh] min-h-[224px] max-h-[520px] w-full snap-x snap-mandatory overflow-x-auto bg-[#fdf2f8] sm:min-h-[272px] md:h-[52vh] lg:h-[62vh] lg:min-h-[620px] lg:max-h-[760px]",
+              "relative h-[40vh] min-h-[224px] max-h-[520px] w-full snap-x snap-mandatory overflow-x-auto bg-[#0f1320] sm:min-h-[272px] md:h-[52vh] lg:h-[62vh] lg:min-h-[620px] lg:max-h-[760px]",
               isDragging ? "cursor-grabbing select-none" : "cursor-grab",
             ].join(" ")}
           >
             {images.length > 0 ? (
               <div className="flex h-full w-full">
                 {images.map((src, index) => (
-                  <div key={`${src}-${index}`} className="relative h-full min-w-full snap-center">
-                    <Image src={src} alt={`${product.name} ${index + 1}`} fill className="object-cover" />
+                  <div key={`${src}-${index}`} className="relative h-full min-w-full snap-center [scroll-snap-stop:always]">
+                    <Image src={src} alt={`${product.name} ${index + 1}`} fill className="object-contain" />
                   </div>
                 ))}
               </div>
@@ -151,7 +181,7 @@ export default function ProductClient({ product }: { product: Product }) {
               <div className="flex h-full items-center justify-center text-black/40">Sin imagen</div>
             )}
 
-            <div className="absolute left-4 top-4 z-20 rounded-full bg-black/55 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+            <div className="absolute left-4 top-4 z-30 rounded-full bg-[rgba(14,18,28,0.72)] px-3 py-1.5 text-sm font-semibold text-white">
               {images.length ? `${imgIdx + 1} / ${images.length}` : "1 / 1"}
             </div>
           </div>
