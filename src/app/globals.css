@@ -69,7 +69,7 @@ h1, h2, h3, h4 {
 .containerX{
   margin-left: auto;
   margin-right: auto;
-  max-width: 75rem;
+  max-width: 78rem;
   padding-left: clamp(.82rem, 3.5vw, 1.2rem);
   padding-right: clamp(.82rem, 3.5vw, 1.2rem);
 }
@@ -106,6 +106,9 @@ h1, h2, h3, h4 {
     radial-gradient(820px 360px at -5% -4%, rgba(var(--accent), .14), transparent 66%),
     linear-gradient(180deg, #fffafc 0%, #f6f0ea 100%);
   border-color: rgba(22,18,30,.08);
+  box-shadow:
+    0 24px 56px rgba(18,18,24,.10),
+    0 1px 0 rgba(255,255,255,.7) inset;
 }
 
 [data-theme="dark"] .homeHint{
@@ -353,7 +356,8 @@ h1, h2, h3, h4 {
 }
 
 .productCard{
-  border-radius: 1.2rem;
+  border-radius: 1.1rem;
+  border-color: rgba(var(--line), .1);
 }
 
 .productPriceChip{
@@ -372,9 +376,9 @@ h1, h2, h3, h4 {
   .productDetailCta{
     opacity: 1;
     transform: translateY(0);
-    font-size: .68rem;
+    font-size: .72rem;
     padding: .34rem .7rem;
-    background: rgba(12,12,18,.42);
+    background: rgba(12,12,18,.48);
   }
 
   .homeHero{
@@ -389,6 +393,21 @@ h1, h2, h3, h4 {
   .heroCtaSecondary{
     min-height: 2.55rem;
     font-size: .84rem;
+  }
+}
+
+@media (max-width: 767px){
+  .catalogGrid{
+    gap: .7rem;
+  }
+
+  .catalogGrid .productCard{
+    border-radius: 1rem;
+  }
+
+  .catalogGrid .productPriceChip{
+    font-size: .84rem;
+    padding: .32rem .5rem;
   }
 }
 
@@ -639,6 +658,25 @@ h1, h2, h3, h4 {
     rgba(255,255,255,.97) 100%
   );
   transform: translateY(-1px);
+}
+
+[data-theme="dark"] .card .border-black\/10{
+  border-color: rgba(255,255,255,.14);
+}
+
+[data-theme="dark"] .card .bg-white\/60{
+  background-color: rgba(255,255,255,.06);
+}
+
+[data-theme="dark"] .card .bg-white\/70{
+  background-color: rgba(255,255,255,.08);
+}
+
+[data-theme="dark"] .card .text-black\/58,
+[data-theme="dark"] .card .text-black\/62,
+[data-theme="dark"] .card .text-black\/67,
+[data-theme="dark"] .card .text-black\/68{
+  color: rgba(var(--ink), .78);
 }
 
 [data-theme="dark"] .btn-secondary{

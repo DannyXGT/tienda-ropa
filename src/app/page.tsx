@@ -39,14 +39,10 @@ function takeUnique(primary: Product[], fallback: Product[], limit: number): Pro
   const seen = new Set<string>();
 
   for (const product of [...primary, ...fallback]) {
-    if (seen.has(product.id)) {
-      continue;
-    }
+    if (seen.has(product.id)) continue;
     seen.add(product.id);
     list.push(product);
-    if (list.length >= limit) {
-      break;
-    }
+    if (list.length >= limit) break;
   }
 
   return list;
@@ -67,7 +63,7 @@ function ProductSection({
     <section className="revealIn space-y-3 sm:space-y-4">
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
         <div>
-          <h2 className="displayText text-[1.85rem] font-semibold sm:text-[2rem]">{title}</h2>
+          <h2 className="displayText text-[1.8rem] font-semibold sm:text-[2rem]">{title}</h2>
           <p className="mt-1 max-w-[48ch] text-sm text-black/58">{subtitle}</p>
         </div>
       </div>
@@ -101,6 +97,32 @@ function ProductSection({
   );
 }
 
+function TrustStrip() {
+  const points = [
+    "Pedido directo por WhatsApp",
+    "Consulta disponibilidad antes de confirmar",
+    "Entrega coordinada",
+    "Atencion personalizada",
+  ];
+
+  return (
+    <section className="revealIn">
+      <div className="card p-4 sm:p-5">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {points.map((point) => (
+            <div
+              key={point}
+              className="rounded-2xl border border-black/10 bg-white/60 px-3.5 py-2.5 text-sm font-medium"
+            >
+              {point}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default async function HomePage() {
   const [products, homeGalleryImages] = await Promise.all([
     getPublishedProducts(),
@@ -115,28 +137,39 @@ export default async function HomePage() {
   );
   const newArrivals = recent.filter((product) => product.newArrival);
   const allProducts = recent;
+
   const productHeroImages = featured.flatMap((product) =>
     product.variants.flatMap((variant) => variant.images)
   );
+
   const heroImages = pickHeroImages(homeGalleryImages.length ? homeGalleryImages : productHeroImages);
   const heroMain = heroImages[0];
   const heroSecondary = heroImages.slice(1, 4);
   const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent("Hola, quiero asesoria para elegir un look")}`;
 
   return (
-    <div className="space-y-3 md:space-y-5">
+    <div className="space-y-5 md:space-y-6">
       <section className="card homeHero revealIn overflow-hidden">
-        <div className="grid gap-0 md:grid-cols-[1.1fr_.9fr]">
-          <div className="order-1 p-4 pt-5 sm:p-6 sm:pt-7 md:order-1 md:p-7 md:pt-7">
-            <h1 className="displayText mt-3 w-full max-w-[14ch] mx-auto px-1 text-center text-[1.48rem] leading-[1.08] font-semibold sm:max-w-[16ch] sm:text-[1.78rem] md:mt-4 md:mx-0 md:max-w-[16ch] md:px-0 md:text-left md:text-[2.35rem]">
-              Ten la libertad de usar lo que te haga sentir única
+        <div className="grid gap-0 md:grid-cols-[1.02fr_.98fr]">
+          <div className="order-1 p-4 pt-5 sm:p-6 md:order-1 md:p-7">
+            <h1 className="displayText mt-1 w-full max-w-[16ch] text-center text-[1.45rem] leading-[1.08] font-semibold sm:text-[1.8rem] md:text-left md:text-[2.25rem]">
+              Ten la libertad de usar lo que te haga sentir unica
             </h1>
 
             <p className="mt-2 w-full max-w-[46ch] text-center text-[.93rem] leading-relaxed text-black/67 sm:text-[.98rem] md:text-left">
               Viste lo que eres, sin moldes, sin estereotipos, solo tu personalidad.
             </p>
 
-            <div className="mt-3 md:hidden">
+            <div className="mt-4 grid grid-cols-1 gap-2.5 sm:w-fit sm:grid-cols-2">
+              <Link href="/#nuevo-ingreso" className="btn btn-primary heroCtaPrimary">
+                Ver nuevo ingreso
+              </Link>
+              <Link href="/estilos" className="btn btn-secondary heroCtaSecondary">
+                Comprar por categoria
+              </Link>
+            </div>
+
+            <div className="mt-4 md:hidden">
               <div className="grid grid-cols-[1fr_.95fr] gap-2 rounded-2xl border border-black/8 bg-[#0f1426]/45 p-2">
                 <div className="relative min-h-[220px] overflow-hidden rounded-2xl">
                   <Image
@@ -197,6 +230,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <TrustStrip />
+
       <div id="nuevo-ingreso" className="scroll-mt-24" />
       <ProductSection
         title="Nuevo ingreso"
@@ -204,6 +239,7 @@ export default async function HomePage() {
         products={newArrivals}
         whatsappHref={whatsappHref}
       />
+
       <ProductSection
         title="Todos los productos"
         subtitle="Explora toda la coleccion disponible."
@@ -213,6 +249,4 @@ export default async function HomePage() {
     </div>
   );
 }
-
-
 

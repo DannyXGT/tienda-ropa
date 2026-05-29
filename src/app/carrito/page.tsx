@@ -32,7 +32,7 @@ export default function CartPage() {
   const itemCount = items.reduce((acc, item) => acc + item.qty, 0);
 
   return (
-    <div className="grid items-start gap-6 lg:gap-8 lg:grid-cols-[1.08fr_.92fr]">
+    <div className={items.length > 0 ? "grid items-start gap-6 lg:gap-8 lg:grid-cols-[1.08fr_.92fr]" : ""}>
       <section className="revealIn space-y-5">
         <div className="flex flex-wrap items-start justify-between gap-3 sm:items-end">
           <div>
@@ -51,7 +51,7 @@ export default function CartPage() {
         </div>
 
         {!items.length ? (
-          <div className="card p-6 text-center sm:p-8">
+          <div className="card p-6 text-center sm:p-9">
             <h2 className="displayText text-[1.7rem] font-semibold">Tu carrito esta vacio</h2>
             <p className="mx-auto mt-2 max-w-md text-black/68">
               Agrega un vestido para continuar con tu pedido por WhatsApp.
@@ -137,8 +137,12 @@ export default function CartPage() {
         )}
       </section>
 
+      {items.length > 0 ? (
       <section className="revealIn revealInDelay1 lg:sticky lg:top-24">
         <div className="card p-5 sm:p-6 md:p-7">
+          <div className="mb-4 rounded-2xl border border-black/10 bg-white/60 px-3.5 py-2.5 text-sm font-medium">
+            Checkout por WhatsApp
+          </div>
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <div className="text-sm text-black/68">Subtotal</div>
@@ -213,6 +217,7 @@ export default function CartPage() {
           </div>
         </div>
       </section>
+      ) : null}
     </div>
   );
 }

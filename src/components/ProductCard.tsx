@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 import type { Product } from "@/lib/catalog.types";
 import { moneyGTQ } from "@/lib/money";
@@ -27,47 +27,47 @@ export default function ProductCard({ product }: { product: Product }) {
                 fill
                 className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
               />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/25 to-transparent" />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/30 to-transparent" />
             </>
           ) : (
             <div className="flex h-full items-center justify-center text-black/40">Sin imagen</div>
           )}
 
-          <div className="absolute left-3 top-3 pill bg-white/86">
+          <div className="absolute left-2.5 top-2.5 pill bg-white/86 text-[11px]">
             {product.variants.length} colores
           </div>
-          <div className="productDetailCta absolute inset-x-3 bottom-3 rounded-full border border-white/28 bg-black/30 px-3 py-1.5 text-center text-xs font-semibold tracking-[.02em] text-white/94 opacity-0 backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-            Ver detalle
+
+          <div className="absolute inset-x-3 bottom-3">
+            <div className="productDetailCta rounded-full border border-white/26 bg-black/35 px-3 py-2 text-center text-xs font-semibold tracking-[.02em] text-white/95 backdrop-blur-md">
+              Ver detalle
+            </div>
           </div>
         </div>
 
-        <div className="p-3.5 sm:p-4">
-          <div className="flex items-start justify-between gap-2">
+        <div className="p-3 sm:p-3.5">
+          <div className="flex items-start justify-between gap-2.5">
             <div className="min-w-0">
-              <div className="truncate text-[.98rem] font-bold tracking-tight sm:text-[1rem]">
+              <div className="line-clamp-2 text-[.95rem] font-bold leading-tight tracking-tight sm:text-[1rem]">
                 {product.name}
-              </div>
-              <div className="lineClamp3 mt-1 text-[13px] leading-[1.28] text-black/70 sm:text-xs sm:leading-[1.34]">
-                {product.description ? product.description : "Seleccion exclusiva de temporada"}
               </div>
             </div>
 
-            <div className="productPriceChip shrink-0 rounded-xl px-2 py-1.5 text-[.9rem] font-extrabold transition-transform duration-300 group-hover:-translate-y-0.5 sm:px-2.5">
+            <div className="productPriceChip shrink-0 rounded-xl px-2.5 py-1.5 text-[.92rem] font-extrabold">
               {moneyGTQ(startingPrice)}
             </div>
           </div>
 
-          <div className="mt-2.5 flex items-center gap-2 sm:mt-3">
+          <div className="mt-2.5 flex items-center gap-1.5 sm:gap-2">
             {product.variants.slice(0, 5).map((variant) => (
               <span
                 key={variant.colorId}
                 title={variant.colorName}
-                className="h-4 w-4 rounded-full ring-1 ring-black/10"
+                className="h-3.5 w-3.5 rounded-full ring-1 ring-black/10 sm:h-4 sm:w-4"
                 style={{ backgroundColor: variant.hex || "#d1d5db" }}
               />
             ))}
             {product.variants.length > 5 ? (
-              <span className="text-xs muted">+{product.variants.length - 5}</span>
+              <span className="text-[11px] muted">+{product.variants.length - 5}</span>
             ) : null}
           </div>
         </div>
@@ -75,3 +75,4 @@ export default function ProductCard({ product }: { product: Product }) {
     </Link>
   );
 }
+

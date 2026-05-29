@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -43,7 +43,7 @@ function NavPill({ href, active, children }: { href: string; active: boolean; ch
     <Link
       href={href}
       className={[
-        "pill whitespace-nowrap transition rounded-2xl px-2.5 py-2 sm:px-4 hover:-translate-y-[1px] active:translate-y-[1px]",
+        "pill whitespace-nowrap transition rounded-2xl px-2 py-1.5 sm:px-4 sm:py-2 hover:-translate-y-[1px] active:translate-y-[1px]",
         active
           ? "bg-white border-black/20 shadow-[0_14px_30px_rgba(18,18,24,.12)]"
           : "pillSoft hover:bg-white",
@@ -71,16 +71,13 @@ export default function Header() {
   ];
 
   useEffect(() => {
-    if (typeof window === "undefined") {
-      return;
-    }
+    if (typeof window === "undefined") return;
 
     const stored = window.localStorage.getItem(THEME_STORAGE_KEY);
     const preferred: ThemeMode = window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
-    const initialTheme: ThemeMode =
-      stored === "dark" || stored === "light" ? stored : preferred;
+    const initialTheme: ThemeMode = stored === "dark" || stored === "light" ? stored : preferred;
 
     document.documentElement.setAttribute("data-theme", initialTheme);
     setThemeMode(initialTheme);
@@ -112,15 +109,15 @@ export default function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-[rgb(var(--bg))]/92 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 border-b border-black/8 bg-[rgb(var(--bg))]/88 backdrop-blur-xl">
       <div className="containerX">
-        <div className="py-3">
-          <div className="flex items-center justify-between gap-2 sm:gap-3">
+        <div className="py-2.5 sm:py-3">
+          <div className="flex items-center justify-between gap-2">
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-transparent bg-[rgb(var(--bg))] text-black/75 md:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-black/8 bg-[rgb(var(--card))]/70 text-black/75 md:hidden"
               onClick={() => setSidebarOpen((prev) => !prev)}
-              aria-label={sidebarOpen ? "Cerrar menu" : "Abrir menu"}
+              aria-label={sidebarOpen ? "Cerrar menú" : "Abrir menú"}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                 <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -128,11 +125,11 @@ export default function Header() {
             </button>
 
             <Link href="/" className="group flex min-w-0 items-center gap-2.5 sm:gap-3">
-              <span className="relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(18,18,24,.14)] ring-1 ring-black/8 sm:h-14 sm:w-14">
+              <span className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white shadow-[0_14px_30px_rgba(18,18,24,.14)] ring-1 ring-black/8 sm:h-14 sm:w-14">
                 <Image src="/logo.jpeg" alt="Bea Millis" fill sizes="56px" className="object-cover" priority />
               </span>
               <span className="min-w-0 leading-tight">
-                <span className="block max-w-[8.5rem] truncate text-[1.02rem] font-semibold tracking-tight text-black sm:max-w-none sm:text-[1.1rem]">
+                <span className="block max-w-[8rem] truncate text-[1rem] font-semibold tracking-tight text-black sm:max-w-none sm:text-[1.1rem]">
                   bea millis
                 </span>
                 <span className="hidden text-[10px] uppercase tracking-[0.26em] text-black/45 sm:block">
@@ -154,10 +151,7 @@ export default function Header() {
                     href={link.href}
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
-                    className={[
-                      "headerNavLink",
-                      active ? "is-active" : "",
-                    ].join(" ")}
+                    className={["headerNavLink", active ? "is-active" : ""].join(" ")}
                   >
                     {link.label}
                   </Link>
@@ -165,11 +159,11 @@ export default function Header() {
               })}
             </nav>
 
-            <nav className="flex shrink-0 items-center gap-1.5 text-sm sm:gap-2">
+            <nav className="flex shrink-0 items-center gap-1 text-sm sm:gap-2">
               <button
                 type="button"
                 onClick={onToggleTheme}
-                className="pill themeToggle transition rounded-2xl px-2.5 py-2 hover:bg-white/90 sm:px-3"
+                className="pill themeToggle transition rounded-2xl px-2 py-1.5 hover:bg-white/90 sm:px-3 sm:py-2"
                 aria-label="Cambiar tema"
                 title="Cambiar tema"
               >
@@ -193,26 +187,26 @@ export default function Header() {
 
       <div
         className={[
-          "fixed inset-0 z-[9998] md:hidden transition-opacity duration-200",
+          "fixed inset-0 z-[9998] md:hidden transition-opacity duration-250",
           sidebarOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0",
         ].join(" ")}
       >
         <button
           type="button"
           className={[
-            "absolute inset-0 backdrop-blur-[2px]",
+            "absolute inset-0 backdrop-blur-[3px]",
             themeMode === "dark" ? "bg-black/50" : "bg-black/20",
           ].join(" ")}
           onClick={() => setSidebarOpen(false)}
-          aria-label="Cerrar menu lateral"
+          aria-label="Cerrar menú lateral"
         />
 
         <aside
           className={[
-            "fixed left-4 right-4 top-[76px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-transform duration-300 ease-out",
-            sidebarOpen ? "translate-x-0" : "-translate-x-[110%]",
+            "fixed left-3 right-3 top-[70px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-all duration-300 ease-out",
+            sidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-[105%] opacity-0",
             themeMode === "dark"
-              ? "border-white/10 bg-neutral-950 text-white"
+              ? "border-white/10 bg-neutral-950/95 text-white"
               : "border-neutral-200 bg-[#fbf7f1] text-neutral-950",
           ].join(" ")}
         >
@@ -300,3 +294,4 @@ export default function Header() {
     </header>
   );
 }
+
