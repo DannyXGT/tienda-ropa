@@ -37,8 +37,8 @@ export default function ProductCard({ product }: { product: Product }) {
             {product.variants.length} colores
           </div>
 
-          <div className="absolute inset-x-3 bottom-3">
-            <div className="productDetailCta rounded-full border border-white/26 bg-black/35 px-3 py-2 text-center text-xs font-semibold tracking-[.02em] text-white/95 backdrop-blur-md">
+          <div className="absolute right-2.5 bottom-2.5">
+            <div className="productDetailCta rounded-full border border-white/24 bg-black/35 px-2.5 py-1.5 text-center text-[11px] font-semibold tracking-[.02em] text-white/95 backdrop-blur-md">
               Ver detalle
             </div>
           </div>

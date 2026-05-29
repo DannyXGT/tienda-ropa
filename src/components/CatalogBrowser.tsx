@@ -34,7 +34,7 @@ export default function CatalogBrowser({
   return (
     <div className="space-y-6">
       {paginated.length > 0 ? (
-        <div className="catalogGrid grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="catalogGrid grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 md:grid-cols-4">
           {paginated.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

@@ -43,7 +43,7 @@ function NavPill({ href, active, children }: { href: string; active: boolean; ch
     <Link
       href={href}
       className={[
-        "pill whitespace-nowrap transition rounded-2xl px-2 py-1.5 sm:px-4 sm:py-2 hover:-translate-y-[1px] active:translate-y-[1px]",
+        "pill h-10 whitespace-nowrap transition rounded-2xl px-2 py-1.5 sm:px-4 sm:py-2 hover:-translate-y-[1px] active:translate-y-[1px]",
         active
           ? "bg-white border-black/20 shadow-[0_14px_30px_rgba(18,18,24,.12)]"
           : "pillSoft hover:bg-white",
@@ -88,13 +88,27 @@ export default function Header() {
   }, [pathname]);
 
   useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
     if (!sidebarOpen) {
-      document.body.style.overflow = "";
+      body.style.overflow = "";
+      html.style.overflow = "";
+      body.style.touchAction = "";
+      html.style.touchAction = "";
       return;
     }
-    document.body.style.overflow = "hidden";
+
+    body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
+    body.style.touchAction = "none";
+    html.style.touchAction = "none";
+
     return () => {
-      document.body.style.overflow = "";
+      body.style.overflow = "";
+      html.style.overflow = "";
+      body.style.touchAction = "";
+      html.style.touchAction = "";
     };
   }, [sidebarOpen]);
 
@@ -111,11 +125,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-black/8 bg-[rgb(var(--bg))]/88 backdrop-blur-xl">
       <div className="containerX">
-        <div className="py-2.5 sm:py-3">
-          <div className="flex items-center justify-between gap-2">
+        <div className="flex h-20 items-center">
+          <div className="flex w-full items-center justify-between gap-2">
             <button
               type="button"
-              className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-black/8 bg-[rgb(var(--card))]/70 text-black/75 md:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-black/8 bg-[rgb(var(--card))]/70 text-black/75 md:hidden"
               onClick={() => setSidebarOpen((prev) => !prev)}
               aria-label={sidebarOpen ? "Cerrar menú" : "Abrir menú"}
             >
@@ -193,20 +207,17 @@ export default function Header() {
       >
         <button
           type="button"
-          className={[
-            "absolute inset-0 backdrop-blur-[1.5px]",
-            themeMode === "dark" ? "bg-black/38" : "bg-black/16",
-          ].join(" ")}
+          className={["absolute inset-0", themeMode === "dark" ? "bg-black/50" : "bg-black/32"].join(" ")}
           onClick={() => setSidebarOpen(false)}
           aria-label="Cerrar menú lateral"
         />
 
         <aside
           className={[
-            "fixed left-3 right-3 top-[68px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-all duration-300 ease-out",
+            "fixed left-4 right-4 top-[84px] z-[9999] mx-auto w-auto max-w-sm rounded-3xl border p-5 shadow-2xl transition-all duration-300 ease-out",
             sidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-[105%] opacity-0",
             themeMode === "dark"
-              ? "border-white/14 bg-[#171c2a] text-white"
+              ? "border-white/10 bg-[#1f2434] text-white"
               : "border-neutral-200 bg-[#fbf7f1] text-neutral-950",
           ].join(" ")}
         >
@@ -249,8 +260,8 @@ export default function Header() {
                       target={link.external ? "_blank" : undefined}
                       rel={link.external ? "noopener noreferrer" : undefined}
                       onClick={() => setSidebarOpen(false)}
-                      className={[
-                        "flex h-11 items-center rounded-2xl px-4 text-[15px] font-medium transition",
+                    className={[
+                        "flex items-center rounded-2xl px-4 py-3 text-[15px] font-medium transition",
                         active
                           ? themeMode === "dark"
                             ? "bg-white/10 text-rose-100"

@@ -69,7 +69,7 @@ function ProductSection({
       </div>
 
       {products.length > 0 ? (
-        <div className="catalogGrid grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
+        <div className="catalogGrid grid grid-cols-1 gap-3 min-[420px]:grid-cols-2 sm:gap-4 md:grid-cols-4">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -93,32 +93,6 @@ function ProductSection({
           </Link>
         </div>
       )}
-    </section>
-  );
-}
-
-function TrustStrip() {
-  const points = [
-    "Pedido directo por WhatsApp",
-    "Consulta disponibilidad antes de confirmar",
-    "Entrega coordinada",
-    "Atencion personalizada",
-  ];
-
-  return (
-    <section className="revealIn">
-      <div className="rounded-2xl border border-black/10 bg-white/50 px-3 py-2 sm:px-4 sm:py-2.5">
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          {points.map((point) => (
-            <div
-              key={point}
-              className="rounded-full border border-black/10 bg-white/70 px-2.5 py-1 text-[11px] font-medium sm:text-xs"
-            >
-              {point}
-            </div>
-          ))}
-        </div>
-      </div>
     </section>
   );
 }
@@ -148,20 +122,20 @@ export default async function HomePage() {
   const whatsappHref = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent("Hola, quiero asesoria para elegir un look")}`;
 
   return (
-    <div className="space-y-5 md:space-y-6">
+    <div className="mx-auto max-w-7xl space-y-5 md:space-y-6">
       <section className="card homeHero revealIn overflow-hidden">
-        <div className="grid gap-0 md:grid-cols-[1.02fr_.98fr]">
-          <div className="order-1 p-4 pt-5 sm:p-6 md:order-1 md:p-7">
-            <h1 className="displayText mt-1 w-full max-w-[16ch] text-center text-[1.45rem] leading-[1.08] font-semibold sm:text-[1.8rem] md:text-left md:text-[2.25rem]">
+        <div className="grid gap-0 md:grid-cols-[1.06fr_.94fr]">
+          <div className="order-1 px-5 py-6 sm:px-6 sm:py-7 md:order-1 md:px-8 md:py-10">
+            <h1 className="displayText mt-1 mx-auto w-full max-w-[15ch] text-center text-3xl leading-tight font-semibold md:mx-0 md:max-w-[16ch] md:text-left md:text-5xl">
               Ten la libertad de usar lo que te haga sentir unica
             </h1>
 
-            <p className="mt-2 w-full max-w-[46ch] text-center text-[.93rem] leading-relaxed text-black/67 sm:text-[.98rem] md:text-left">
+            <p className="mt-2.5 mx-auto w-full max-w-[46ch] text-center text-base leading-relaxed text-black/67 md:mx-0 md:text-left">
               Viste lo que eres, sin moldes, sin estereotipos, solo tu personalidad.
             </p>
 
             <div className="mt-4 flex flex-col items-center gap-2 md:items-start">
-              <Link href="/#nuevo-ingreso" className="btn btn-primary heroCtaPrimary !min-h-0 !px-4 !py-2.5 !text-sm">
+              <Link href="/#nuevo-ingreso" className="btn btn-primary heroCtaPrimary h-11 rounded-full px-6 text-sm">
                 Ver nuevo ingreso
               </Link>
               <Link href="/estilos" className="text-sm font-semibold text-black/72 underline-offset-4 hover:underline">
@@ -230,8 +204,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <TrustStrip />
-
       <div id="nuevo-ingreso" className="scroll-mt-24" />
       <ProductSection
         title="Nuevo ingreso"
@@ -249,4 +221,3 @@ export default async function HomePage() {
     </div>
   );
 }
-
