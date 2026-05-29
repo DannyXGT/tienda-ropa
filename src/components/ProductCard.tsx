@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
         <div className="p-3 sm:p-3.5">
           <div className="flex items-start justify-between gap-2.5">
             <div className="min-w-0">
-              <div className="line-clamp-2 text-[.95rem] font-bold leading-tight tracking-tight sm:text-[1rem]">
+              <div className="text-[.92rem] font-bold leading-tight tracking-tight sm:text-[1rem]">
                 {product.name}
               </div>
             </div>

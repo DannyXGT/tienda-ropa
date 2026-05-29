@@ -107,12 +107,12 @@ function TrustStrip() {
 
   return (
     <section className="revealIn">
-      <div className="card p-4 sm:p-5">
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="rounded-2xl border border-black/10 bg-white/50 px-3 py-2 sm:px-4 sm:py-2.5">
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
           {points.map((point) => (
             <div
               key={point}
-              className="rounded-2xl border border-black/10 bg-white/60 px-3.5 py-2.5 text-sm font-medium"
+              className="rounded-full border border-black/10 bg-white/70 px-2.5 py-1 text-[11px] font-medium sm:text-xs"
             >
               {point}
             </div>
@@ -160,11 +160,11 @@ export default async function HomePage() {
               Viste lo que eres, sin moldes, sin estereotipos, solo tu personalidad.
             </p>
 
-            <div className="mt-4 grid grid-cols-1 gap-2.5 sm:w-fit sm:grid-cols-2">
-              <Link href="/#nuevo-ingreso" className="btn btn-primary heroCtaPrimary">
+            <div className="mt-4 flex flex-col items-center gap-2 md:items-start">
+              <Link href="/#nuevo-ingreso" className="btn btn-primary heroCtaPrimary !min-h-0 !px-4 !py-2.5 !text-sm">
                 Ver nuevo ingreso
               </Link>
-              <Link href="/estilos" className="btn btn-secondary heroCtaSecondary">
+              <Link href="/estilos" className="text-sm font-semibold text-black/72 underline-offset-4 hover:underline">
                 Comprar por categoria
               </Link>
             </div>

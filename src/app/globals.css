@@ -315,11 +315,11 @@ h1, h2, h3, h4 {
 }
 
 .heroCtaPrimary{
-  width: 100%;
+  width: auto;
 }
 
 .heroCtaSecondary{
-  width: 100%;
+  width: auto;
   border-width: 1px;
 }
 
@@ -386,13 +386,13 @@ h1, h2, h3, h4 {
   }
 
   .heroCtaPrimary{
-    min-height: 2.7rem;
-    font-size: .9rem;
+    min-height: 2.35rem;
+    font-size: .83rem;
   }
 
   .heroCtaSecondary{
-    min-height: 2.55rem;
-    font-size: .84rem;
+    min-height: 2.25rem;
+    font-size: .8rem;
   }
 }
 
@@ -677,6 +677,10 @@ h1, h2, h3, h4 {
 [data-theme="dark"] .card .text-black\/67,
 [data-theme="dark"] .card .text-black\/68{
   color: rgba(var(--ink), .78);
+}
+
+[data-theme="dark"] .bg-white\/50{
+  background-color: rgba(255,255,255,.05) !important;
 }
 
 [data-theme="dark"] .btn-secondary{

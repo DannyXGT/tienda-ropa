@@ -194,8 +194,8 @@ export default function Header() {
         <button
           type="button"
           className={[
-            "absolute inset-0 backdrop-blur-[3px]",
-            themeMode === "dark" ? "bg-black/50" : "bg-black/20",
+            "absolute inset-0 backdrop-blur-[1.5px]",
+            themeMode === "dark" ? "bg-black/38" : "bg-black/16",
           ].join(" ")}
           onClick={() => setSidebarOpen(false)}
           aria-label="Cerrar menú lateral"
@@ -203,10 +203,10 @@ export default function Header() {
 
         <aside
           className={[
-            "fixed left-3 right-3 top-[70px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-all duration-300 ease-out",
+            "fixed left-3 right-3 top-[68px] z-[9999] rounded-3xl border p-3 shadow-2xl transition-all duration-300 ease-out",
             sidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-[105%] opacity-0",
             themeMode === "dark"
-              ? "border-white/10 bg-neutral-950/95 text-white"
+              ? "border-white/14 bg-[#171c2a] text-white"
               : "border-neutral-200 bg-[#fbf7f1] text-neutral-950",
           ].join(" ")}
         >
@@ -270,7 +270,7 @@ export default function Header() {
 
           <div
             className={[
-              "mt-2.5 border-t pt-2.5",
+              "mt-3 border-t pt-2.5",
               themeMode === "dark" ? "border-white/10" : "border-neutral-200",
             ].join(" ")}
           >
