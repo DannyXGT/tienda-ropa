@@ -756,6 +756,52 @@ h1, h2, h3, h4 {
   transform: translateY(-1px);
 }
 
+.filterButton,
+.filterSelect{
+  min-height: 2.75rem;
+  border: 1px solid rgba(var(--line), .24);
+  background: rgba(var(--card), .78);
+  color: rgb(var(--ink));
+  border-radius: .15rem;
+  padding: 0 .9rem;
+  font-size: .9rem;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 160ms ease, background 160ms ease, transform 140ms ease;
+}
+
+.filterButton:hover,
+.filterSelect:hover{
+  border-color: rgba(var(--accent), .42);
+  background: rgba(var(--card), .95);
+}
+
+.filterButton:focus-visible,
+.filterSelect:focus-visible{
+  border-color: rgba(var(--accent), .55);
+  box-shadow: 0 0 0 3px rgba(var(--accent), .16);
+}
+
+.filterChip{
+  border-radius: .15rem;
+  background: rgba(var(--card), .74);
+  color: rgb(var(--accent-dark));
+  padding: .55rem .8rem;
+  font-size: .85rem;
+  font-weight: 700;
+}
+
+[data-theme="dark"] .filterButton,
+[data-theme="dark"] .filterSelect{
+  border-color: rgba(255,255,255,.18);
+  background: rgba(255,255,255,.05);
+}
+
+[data-theme="dark"] .filterChip{
+  background: rgba(255,255,255,.08);
+  color: rgb(var(--accent-light));
+}
+
 [data-theme="dark"] .input{
   box-shadow:
     0 1px 0 rgba(255,255,255,.08) inset,

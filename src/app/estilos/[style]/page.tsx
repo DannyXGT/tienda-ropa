@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/SectionTitle";
-import ProductCard from "@/components/ProductCard";
+import StyleProductGrid from "@/components/StyleProductGrid";
 import { getProductsByStyle, getStyleById } from "@/lib/catalog";
 
 export const revalidate = 0;
@@ -21,11 +21,7 @@ export default async function StyleDetailPage({
         <SectionTitle title={style.name} subtitle={`${list.length} producto${list.length === 1 ? "" : "s"}`} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-        {list.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+      <StyleProductGrid products={list} />
     </div>
   );
 }
