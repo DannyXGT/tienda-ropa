@@ -94,9 +94,7 @@ export default function StyleProductGrid({ products }: { products: Product[] }) 
           aria-expanded={filtersOpen}
           onClick={() => setFiltersOpen((current) => !current)}
         >
-          <span aria-hidden="true" className="filterToggleIcon">
-            {filtersOpen ? "-" : "+"}
-          </span>
+          <span aria-hidden="true" className="filterToggleIcon" />
           Filtro y orden
         </button>
 
@@ -148,22 +146,22 @@ export default function StyleProductGrid({ products }: { products: Product[] }) 
         <div className="flex flex-wrap items-center gap-2">
           {size ? (
             <button type="button" className="filterChip" onClick={() => setSize("")}>
-              {size} x
+              {size} ×
             </button>
           ) : null}
           {color ? (
             <button type="button" className="filterChip" onClick={() => setColor("")}>
-              {color} x
+              {color} ×
             </button>
           ) : null}
           {category ? (
             <button type="button" className="filterChip" onClick={() => setCategory("")}>
-              {categoryLabel} x
+              {categoryLabel} ×
             </button>
           ) : null}
           {sort !== "recent" ? (
             <button type="button" className="filterChip" onClick={() => setSort("recent")}>
-              {sort === "price-asc" ? "Menor precio" : "Mayor precio"} x
+              {sort === "price-asc" ? "Menor precio" : "Mayor precio"} ×
             </button>
           ) : null}
         </div>

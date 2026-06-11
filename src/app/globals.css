@@ -760,7 +760,8 @@ h1, h2, h3, h4 {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: .65rem;
+  gap: .6rem;
+  row-gap: .75rem;
 }
 
 .filterControls{
@@ -768,7 +769,7 @@ h1, h2, h3, h4 {
   flex: 1 1 100%;
   grid-template-rows: 0fr;
   opacity: 0;
-  transform: translateX(-10px);
+  transform: translateX(-8px);
   transition:
     grid-template-rows 240ms ease,
     opacity 180ms ease,
@@ -784,7 +785,7 @@ h1, h2, h3, h4 {
 .filterControlsInner{
   display: flex;
   flex-wrap: wrap;
-  gap: .65rem;
+  gap: .6rem;
   min-height: 0;
   overflow: hidden;
 }
@@ -792,17 +793,17 @@ h1, h2, h3, h4 {
 .filterButton,
 .filterSelect,
 .filterClearButton{
-  min-height: 2.85rem;
-  border: 1px solid rgba(var(--line), .32);
+  min-height: 2.65rem;
+  border: 1px solid rgba(var(--line), .26);
   background:
-    linear-gradient(180deg, rgba(var(--card), .96), rgba(var(--card), .74));
+    linear-gradient(180deg, rgba(var(--card), .88), rgba(var(--card), .64));
   color: rgb(var(--ink));
-  border-radius: 1rem;
-  padding: 0 .95rem;
-  font-size: .9rem;
+  border-radius: 999px;
+  padding: 0 1rem;
+  font-size: .88rem;
   font-weight: 800;
   outline: none;
-  box-shadow: 0 12px 28px rgba(var(--shadow), .07);
+  box-shadow: 0 10px 24px rgba(var(--shadow), .045);
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -812,7 +813,8 @@ h1, h2, h3, h4 {
 }
 
 .filterSelect{
-  min-width: 8.5rem;
+  min-width: 8.35rem;
+  padding-right: 1.65rem;
   cursor: pointer;
 }
 
@@ -823,15 +825,39 @@ h1, h2, h3, h4 {
 }
 
 .filterToggleIcon{
-  display: inline-grid;
-  width: 1.2rem;
-  height: 1.2rem;
-  place-items: center;
-  border-radius: 999px;
-  background: rgba(var(--accent), .12);
+  position: relative;
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
   color: rgb(var(--accent-dark));
-  font-size: .9rem;
-  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.filterToggleIcon::before,
+.filterToggleIcon::after{
+  content: "";
+  position: absolute;
+  left: .1rem;
+  right: .1rem;
+  top: 50%;
+  height: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  transform: translateY(-50%);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.filterToggleIcon::after{
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.filterToggle.is-active .filterToggleIcon{
+  transform: rotate(180deg);
+}
+
+.filterToggle.is-active .filterToggleIcon::after{
+  opacity: 0;
+  transform: translateY(-50%) rotate(90deg) scaleX(.35);
 }
 
 .filterButton:hover,
@@ -840,8 +866,8 @@ h1, h2, h3, h4 {
 .filterButton.is-active{
   border-color: rgba(var(--accent), .46);
   background:
-    linear-gradient(180deg, rgba(var(--card), 1), rgba(var(--accent), .08));
-  box-shadow: 0 18px 34px rgba(var(--shadow), .1);
+    linear-gradient(180deg, rgba(var(--card), .96), rgba(var(--accent), .07));
+  box-shadow: 0 14px 28px rgba(var(--shadow), .075);
   transform: translateY(-1px);
 }
 
@@ -853,18 +879,25 @@ h1, h2, h3, h4 {
 }
 
 .filterClearButton{
+  background:
+    linear-gradient(180deg, rgba(var(--accent), .12), rgba(var(--accent), .06));
+  border-color: rgba(var(--accent), .16);
   color: rgb(var(--accent-dark));
   cursor: pointer;
 }
 
 .filterChip{
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
   border: 1px solid rgba(var(--accent), .22);
   border-radius: 999px;
   background: rgba(var(--accent), .1);
   color: rgb(var(--accent-dark));
-  padding: .5rem .8rem;
+  padding: .45rem .75rem;
   font-size: .82rem;
   font-weight: 800;
+  line-height: 1;
   transition: border-color 160ms ease, background 160ms ease, transform 140ms ease;
 }
 
@@ -879,8 +912,8 @@ h1, h2, h3, h4 {
 [data-theme="dark"] .filterClearButton{
   border-color: rgba(255,255,255,.13);
   background:
-    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
-  box-shadow: 0 18px 34px rgba(0,0,0,.2);
+    linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.032));
+  box-shadow: 0 14px 30px rgba(0,0,0,.18);
 }
 
 [data-theme="dark"] .filterButton:hover,
@@ -893,7 +926,6 @@ h1, h2, h3, h4 {
 }
 
 [data-theme="dark"] .filterToggleIcon{
-  background: rgba(var(--accent-light), .14);
   color: rgb(var(--accent-light));
 }
 
