@@ -756,50 +756,157 @@ h1, h2, h3, h4 {
   transform: translateY(-1px);
 }
 
+.filterBar{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+}
+
+.filterControls{
+  display: grid;
+  flex: 1 1 100%;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition:
+    grid-template-rows 240ms ease,
+    opacity 180ms ease,
+    transform 220ms ease;
+}
+
+.filterControls.is-open{
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.filterControlsInner{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .filterButton,
-.filterSelect{
-  min-height: 2.75rem;
-  border: 1px solid rgba(var(--line), .24);
-  background: rgba(var(--card), .78);
+.filterSelect,
+.filterClearButton{
+  min-height: 2.85rem;
+  border: 1px solid rgba(var(--line), .32);
+  background:
+    linear-gradient(180deg, rgba(var(--card), .96), rgba(var(--card), .74));
   color: rgb(var(--ink));
-  border-radius: .15rem;
-  padding: 0 .9rem;
+  border-radius: 1rem;
+  padding: 0 .95rem;
   font-size: .9rem;
-  font-weight: 700;
+  font-weight: 800;
   outline: none;
-  transition: border-color 160ms ease, background 160ms ease, transform 140ms ease;
+  box-shadow: 0 12px 28px rgba(var(--shadow), .07);
+  transition:
+    border-color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease,
+    color 180ms ease,
+    transform 160ms ease;
+}
+
+.filterSelect{
+  min-width: 8.5rem;
+  cursor: pointer;
+}
+
+.filterToggle{
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+}
+
+.filterToggleIcon{
+  display: inline-grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(var(--accent), .12);
+  color: rgb(var(--accent-dark));
+  font-size: .9rem;
+  line-height: 1;
 }
 
 .filterButton:hover,
-.filterSelect:hover{
-  border-color: rgba(var(--accent), .42);
-  background: rgba(var(--card), .95);
+.filterSelect:hover,
+.filterClearButton:hover,
+.filterButton.is-active{
+  border-color: rgba(var(--accent), .46);
+  background:
+    linear-gradient(180deg, rgba(var(--card), 1), rgba(var(--accent), .08));
+  box-shadow: 0 18px 34px rgba(var(--shadow), .1);
+  transform: translateY(-1px);
 }
 
 .filterButton:focus-visible,
-.filterSelect:focus-visible{
-  border-color: rgba(var(--accent), .55);
-  box-shadow: 0 0 0 3px rgba(var(--accent), .16);
+.filterSelect:focus-visible,
+.filterClearButton:focus-visible{
+  border-color: rgba(var(--accent), .6);
+  box-shadow: 0 0 0 3px rgba(var(--accent), .16), 0 18px 34px rgba(var(--shadow), .1);
+}
+
+.filterClearButton{
+  color: rgb(var(--accent-dark));
+  cursor: pointer;
 }
 
 .filterChip{
-  border-radius: .15rem;
-  background: rgba(var(--card), .74);
+  border: 1px solid rgba(var(--accent), .22);
+  border-radius: 999px;
+  background: rgba(var(--accent), .1);
   color: rgb(var(--accent-dark));
-  padding: .55rem .8rem;
-  font-size: .85rem;
-  font-weight: 700;
+  padding: .5rem .8rem;
+  font-size: .82rem;
+  font-weight: 800;
+  transition: border-color 160ms ease, background 160ms ease, transform 140ms ease;
+}
+
+.filterChip:hover{
+  border-color: rgba(var(--accent), .42);
+  background: rgba(var(--accent), .16);
+  transform: translateY(-1px);
 }
 
 [data-theme="dark"] .filterButton,
-[data-theme="dark"] .filterSelect{
-  border-color: rgba(255,255,255,.18);
-  background: rgba(255,255,255,.05);
+[data-theme="dark"] .filterSelect,
+[data-theme="dark"] .filterClearButton{
+  border-color: rgba(255,255,255,.13);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+  box-shadow: 0 18px 34px rgba(0,0,0,.2);
+}
+
+[data-theme="dark"] .filterButton:hover,
+[data-theme="dark"] .filterSelect:hover,
+[data-theme="dark"] .filterClearButton:hover,
+[data-theme="dark"] .filterButton.is-active{
+  border-color: rgba(var(--accent-light), .42);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.105), rgba(var(--accent), .09));
+}
+
+[data-theme="dark"] .filterToggleIcon{
+  background: rgba(var(--accent-light), .14);
+  color: rgb(var(--accent-light));
 }
 
 [data-theme="dark"] .filterChip{
-  background: rgba(255,255,255,.08);
+  border-color: rgba(var(--accent-light), .24);
+  background: rgba(var(--accent-light), .1);
   color: rgb(var(--accent-light));
+}
+
+@media (min-width: 768px){
+  .filterControls{
+    flex: 1 1 auto;
+  }
 }
 
 [data-theme="dark"] .input{

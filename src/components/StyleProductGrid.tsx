@@ -26,8 +26,10 @@ function getStartingPrice(product: Product): number {
 }
 
 export default function StyleProductGrid({ products }: { products: Product[] }) {
+  const [filtersOpen, setFiltersOpen] = useState(true);
   const [size, setSize] = useState<SizeLabel | "">("");
   const [color, setColor] = useState("");
+  const [category, setCategory] = useState("");
   const [sort, setSort] = useState<SortMode>("recent");
 
   const sizes = useMemo(
@@ -43,14 +45,27 @@ export default function StyleProductGrid({ products }: { products: Product[] }) 
     [products]
   );
 
+  const categories = useMemo(() => {
+    const map = new Map<string, string>();
+
+    products.forEach((product) => {
+      map.set(product.styleId, product.styleName);
+    });
+
+    return Array.from(map, ([id, name]) => ({ id, name })).sort((a, b) =>
+      a.name.localeCompare(b.name, "es")
+    );
+  }, [products]);
+
   const filtered = useMemo(() => {
     const result = products.filter((product) => {
       const matchesSize = size ? getProductSizes(product).includes(size) : true;
       const matchesColor = color
         ? product.variants.some((variant) => variant.colorName === color)
         : true;
+      const matchesCategory = category ? product.styleId === category : true;
 
-      return matchesSize && matchesColor;
+      return matchesSize && matchesColor && matchesCategory;
     });
 
     return [...result].sort((a, b) => {
@@ -58,50 +73,75 @@ export default function StyleProductGrid({ products }: { products: Product[] }) 
       if (sort === "price-desc") return getStartingPrice(b) - getStartingPrice(a);
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
-  }, [products, size, color, sort]);
+  }, [products, size, color, category, sort]);
 
-  const hasFilters = Boolean(size || color || sort !== "recent");
+  const hasFilters = Boolean(size || color || category || sort !== "recent");
+  const categoryLabel = categories.find((item) => item.id === category)?.name ?? category;
 
   function clearFilters() {
     setSize("");
     setColor("");
+    setCategory("");
     setSort("recent");
   }
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <button type="button" className="filterButton" onClick={clearFilters}>
+      <div className="filterBar">
+        <button
+          type="button"
+          className={`filterButton filterToggle ${filtersOpen ? "is-active" : ""}`}
+          aria-expanded={filtersOpen}
+          onClick={() => setFiltersOpen((current) => !current)}
+        >
+          <span aria-hidden="true" className="filterToggleIcon">
+            {filtersOpen ? "-" : "+"}
+          </span>
           Filtro y orden
         </button>
 
-        <select className="filterSelect" value={size} onChange={(event) => setSize(event.target.value as SizeLabel | "")}>
-          <option value="">Talla</option>
-          {sizes.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+        <div className={`filterControls ${filtersOpen ? "is-open" : ""}`}>
+          <div className="filterControlsInner">
+            <select className="filterSelect" value={size} onChange={(event) => setSize(event.target.value as SizeLabel | "")}>
+              <option value="">Talla</option>
+              {sizes.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
-        <select className="filterSelect" value={color} onChange={(event) => setColor(event.target.value)}>
-          <option value="">Color</option>
-          {colors.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+            <select className="filterSelect" value={color} onChange={(event) => setColor(event.target.value)}>
+              <option value="">Color</option>
+              {colors.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
-        <select className="filterSelect" value="" disabled>
-          <option>Categoria</option>
-        </select>
+            <select className="filterSelect" value={category} onChange={(event) => setCategory(event.target.value)}>
+              <option value="">Categoria</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
 
-        <select className="filterSelect" value={sort} onChange={(event) => setSort(event.target.value as SortMode)}>
-          <option value="recent">Precio</option>
-          <option value="price-asc">Menor precio</option>
-          <option value="price-desc">Mayor precio</option>
-        </select>
+            <select className="filterSelect" value={sort} onChange={(event) => setSort(event.target.value as SortMode)}>
+              <option value="recent">Precio</option>
+              <option value="price-asc">Menor precio</option>
+              <option value="price-desc">Mayor precio</option>
+            </select>
+
+            {hasFilters ? (
+              <button type="button" className="filterClearButton" onClick={clearFilters}>
+                Limpiar
+              </button>
+            ) : null}
+          </div>
+        </div>
       </div>
 
       {hasFilters ? (
@@ -114,6 +154,11 @@ export default function StyleProductGrid({ products }: { products: Product[] }) 
           {color ? (
             <button type="button" className="filterChip" onClick={() => setColor("")}>
               {color} x
+            </button>
+          ) : null}
+          {category ? (
+            <button type="button" className="filterChip" onClick={() => setCategory("")}>
+              {categoryLabel} x
             </button>
           ) : null}
           {sort !== "recent" ? (
